@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NurserySpecification</title>
+</head>
+<body>
+    <div class="dashboard">
+
+        <div class="info">
+            <div class="card border-dark mb-3 shadow" style="max-width: 18rem;">
+                <div class="card-body text-dark">
+                  <h5 class="card-title">Additional Information</h5>            
+                  <div *ngIf="show_additional_info==true">
+                    <p class="card-text">Name: {{ nurseryInfo.name }}</p>
+                    <p class="card-text">Total space: {{ nurseryInfo.total_space }}</p>
+                    <p class="card-text">Location: {{ nurseryInfo.location }}</p>
+                    <p class="card-text">Planted seedlings: {{ nurseryInfo.num_of_seedlings }}</p>
+                    <p class="card-text">Id: {{ nurseryInfo._id }}</p>
+                  </div>
+                </div>
+                <div class="card-footer bg-transparent border-light">
+                    <button type="submit" class="btn btn-outline-secondary" (click)="toggle()">
+                        <p class="get"  *ngIf="show_additional_info==false">⌄</p>
+                        <p class="nget"  *ngIf="show_additional_info==true">^</p>
+                    </button>
+                </div>
+            </div>    
+        </div>
+
+        <div class="water">
+            <div class="card border-dark mb-3 shadow" style="max-width: 18rem;">
+                <div class="card-header">
+                    <button type="button" class="btn btn-outline-primary" (click)="change_state(1, 'water')"><p class="add">+</p></button>
+                    <button type="button" class="btn btn-outline-danger" (click)="change_state(-1, 'water')"><p class="sub">-</p></button>
+                </div>
+                <div class="card-body text-dark">
+                  <h5 class="card-title">Water</h5>
+                  <p class="card-text">There is currently {{nurseryInfo.water}} liters in the nursery.</p>
+                </div>
+            </div>
+        </div>
+    
+        <div class="temperature">
+            <div class="card border-dark mb-3 shadow" style="max-width: 18rem;">
+                <div class="card-header">
+                    <button type="button" class="btn btn-outline-primary" (click)="change_state(1, 'temperature')"><p class="add">+</p></button>
+                    <button type="button" class="btn btn-outline-danger" (click)="change_state(-1, 'temperature')"><p class="sub">-</p></button>
+                </div>
+                <div class="card-body text-dark">
+                  <h5 class="card-title">Temperature</h5>
+                  <p class="card-text">The temperature is currently {{nurseryInfo.temperature}}°C in the nursery.</p>
+                </div>
+            </div>
+        </div> 
+    </div>
+    <br>
+    <div class="nursery">
+        <table>
+            <tbody>
+                <tr *ngFor="numberH of numbersHeight, let h = index">
+                    <td *ngFor="numberW of numbersWidth, let w = index">
+                        <div *ngIf="seedlings[h*numbersWidth.length + w]==null">
+                            <a href="#" (mouseenter)="getSeedlingSpecification(null)" (mouseleave)="stopSeedlingSpecification(null)">
+                                <app-seedling [seedling]="null">
+                                </app-seedling>
+                            </a>
+                        </div>
+                        <div *ngIf="seedlings[h*numbersWidth.length + w]!=null">
+                            <div  class="outer-side">
+                                <div class="inner-side">
+                                    <div class="front-side">
+                                        <app-seedling [seedling]="seedlings[h*numbersWidth.length + w]"></app-seedling>
+                                    </div>
+                                    <div class="back-side">
+                                        <app-seedling-specification [seedling]="seedlings[h*numbersWidth.length + w]"></app-seedling-specification>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

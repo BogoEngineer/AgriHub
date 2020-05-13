@@ -1,0 +1,35 @@
+//USER
+{
+    "first_name": "Marko",
+    "last_name": "Cvitanovic",
+    "username": "mare",
+    "password": "123",
+    "date_of_birth": "1965-09-01",
+    "place_of_birth": "Belgrade",
+    "contact": "12335668",
+    "email": "mare.cveki@gmail.com"
+}
+
+//COMPANY
+{
+    "full_name": "AgriFun",
+    "short_name": "afun",
+    "password": "123",
+    "date_of_founding": "2019-08-08",
+    "location": "Harare",
+    "email": "afun@hotmail.com"
+}
+
+//NURSERY
+{
+    "space": 200,
+    "name": "Basta",
+    "place": "Stepojevac"
+}
+
+//PRODUCT
+{
+    "type": "seedling",
+    "name": "paprika",
+    "price": 100
+}

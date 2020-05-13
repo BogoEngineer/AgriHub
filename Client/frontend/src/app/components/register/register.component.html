@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <br><br><br>
+    <div class="container">
+        <div class="form-group">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect01">Role:</label>
+                </div>
+                <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="role">
+                  <option selected>Choose...</option>
+                  <option value="User">User</option>
+                  <option value="Company">Company</option>
+                </select>
+            </div>
+        </div>
+        <br>
+        <p *ngIf="filled==false" style="color: red;">*Please fill all fields</p>
+        <form id="company" *ngIf="role=='Company'">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Full name:</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. Agriculture Fundamentals d.o.o" name="full_name" [(ngModel)]="full_name">
+            </div>  
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Name abbreviation:</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. AgroFun" name="name_abbr" [(ngModel)]="name_abbr">
+            </div> 
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Password:</span>
+                </div>
+                <input type="password" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. 123" name="password" [(ngModel)]="password">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Founding date:</span>
+                </div>
+                <input type="date" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" name="date" [(ngModel)]="date">
+            </div> 
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Place:</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. Belgrade, Serbia" name="place" [(ngModel)]="place">
+            </div> 
+            <p *ngIf="valid_email==false&&filled==true" style="color: red;">*Please enter a valid email</p>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Email:</span>
+                </div>
+                <input type="email" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. agrifun123@gmail.com" name="email" [(ngModel)]="email">
+            </div> 
+        </form>
+
+        <form id="user"  *ngIf="role=='User'">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">First name:</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. John" name="first_name" [(ngModel)]="first_name">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Last name:</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. Smith" name="last_name" [(ngModel)]="last_name">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Username:</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. john123" name="username" [(ngModel)]="username">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Password:</span>
+                </div>
+                <input type="password" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. 123" name="password" [(ngModel)]="password">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Date of bith:</span>
+                </div>
+                <input type="date" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" name="date" [(ngModel)]="date">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Place of birth:</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. Belgrade, Serbia" name="place" [(ngModel)]="place">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Phone:</span>
+                </div>
+                <input type="tel" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" name="phone" [(ngModel)]="phone">
+            </div>
+            <p *ngIf="valid_email==false&&filled==true" style="color: red;">*Please enter a valid email</p>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Email:</span>
+                </div>
+                <input type="email" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. john.smith@gmail.com" name="email" [(ngModel)]="email">
+            </div>
+        </form>
+        <br>
+        <div id="submit">
+            <button type="button" class="btn btn-outline-dark" (click)="register()">Registruj se</button>
+        </div>
+    </div>
+    <br>
+</body>
+</html>

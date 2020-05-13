@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seedling</title>
+</head>
+<body>
+    <img src='assets/resources/patch with hole.png' alt="seedling" *ngIf="seedling==null">
+    <div *ngIf="seedling!=null">
+        <img src='assets/resources/first stage seedling.png' alt="seedling" *ngIf="seedling.progress<=33">
+        <img src='assets/resources/second stage seedling.png' alt="seedling" *ngIf="seedling.progress>33 && seedling.progress<=66">
+        <img src='assets/resources/third stage seedling.png' alt="seedling" *ngIf="seedling.progress>66">
+    </div>
+</body>
+</html>

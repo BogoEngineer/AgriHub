@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LogIn</title>
+</head>
+<body>
+  <br><br><br>
+  <div class="container">
+    <div class="form-group">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <label class="input-group-text" for="inputGroupSelect01">Role:</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect01" [(ngModel)]="role">
+              <option selected>Choose...</option>
+              <option value="User">User</option>
+              <option value="Company">Company</option>
+              <option value="Admin">Admin</option>
+            </select>
+        </div>
+    </div>
+    <br>
+    <form id="company" *ngIf="role=='Company'">
+      <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">Name abbreviation:</span>
+          </div>
+          <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. AgroFun">
+      </div> 
+      <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">Password:</span>
+          </div>
+          <input type="password" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. 123">
+      </div>
+    </form>
+
+    <form id="user"  *ngIf="role=='User' || role=='Admin'">
+      <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">Username:</span>
+          </div>
+          <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. john123">
+      </div>
+      <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default">Password:</span>
+          </div>
+          <input type="password" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. 123">
+      </div>
+    </form>
+    <br>
+    <div id="submit">
+      <button type="button" class="btn btn-outline-dark">Prijavi se</button>
+    </div>
+  </div>
+</body>
+</html>

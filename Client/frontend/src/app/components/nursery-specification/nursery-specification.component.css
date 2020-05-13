@@ -1,0 +1,125 @@
+.outer-side, .inner-side, .front-side, .back-side {
+  height: 150px;
+  width: 150px;
+}
+.outer-side {
+  background-color: transparent;
+  perspective: 1000px;
+}
+
+.inner-side {
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.outer-side:hover .inner-side {
+  transform: rotateY(180deg);
+}
+
+.front-side, .back-side {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.back-side {
+  transform: rotateY(180deg);
+}
+
+.dashboard {
+  position: relative;
+  top: 30px;
+  left: 10px;
+}
+
+.info {
+  position: absolute;
+  top: 40px;
+  left: 400px;
+}
+
+.temperature {
+  position: relative;
+  width: 300px;
+}
+
+.water {
+  position: relative;
+  width: 300px
+}
+
+.card-header {
+  height: 50px;
+}
+
+.card-footer {
+  height: 50px;
+}
+
+.btn-outline-primary {
+  border-radius: 100%;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  left: 5%;
+}
+
+.btn-outline-danger {
+  border-radius: 100%;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  left: 17%;
+}
+
+.btn-outline-secondary {
+  display: block;
+  border-radius: 100%;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  left: 45%;
+}
+
+.get {
+  position: absolute; 
+  left: 8px;
+  top: 0px;
+}
+
+.nget {
+  position: absolute; 
+  left: 8px;
+  top: 3px;
+}
+
+.add {
+  position: absolute; 
+  left: 8px;
+  top: 0px;
+}
+
+.sub {
+  position: absolute; 
+  left: 11px;
+  top: 0px;
+}
+
+.nursery {
+  border-style: double;
+  border-radius: 5%;
+  border-color: saddlebrown;
+}
+
+table {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  background-image: url('/assets/resources/grass_texture.png');
+}
+
+td {
+  padding: 5px;
+}

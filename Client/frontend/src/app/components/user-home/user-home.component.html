@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <br>
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Naziv</th>
+        <th scope="col">Mesto</th>
+        <th scope="col">Broj sadnica</th>
+        <th scope="col">Broj sl. mesta</th>
+        <th scope="col">Voda</th>
+        <th scope="col">Temperatura</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let nursery of nurseries, let i = index" (click)="specifications(nursery)">
+            <td scope="row">{{i+1}}</td>
+            <td>{{nursery.name}}</td>
+            <td>{{nursery.location}}</td>
+            <td>{{nursery.num_of_seedlings}}</td>
+            <td>{{nursery.free_space}}</td>
+            <td>{{nursery.water}}</td>
+            <td>{{nursery.temperature}}</td>
+        </tr>
+    </tbody>
+  </table>
+</body>
+</html>

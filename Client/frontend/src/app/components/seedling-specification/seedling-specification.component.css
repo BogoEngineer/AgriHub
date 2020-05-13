@@ -1,0 +1,14 @@
+body {
+    width: 150px;
+    height: 150px;
+    background-color: lightblue;
+    border-radius: 2%;
+}
+
+.look {
+    position: absolute;
+    margin-top: 15%;
+    margin-left: 25%;
+    width: 60%;
+    height: 60%;
+}

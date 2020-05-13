@@ -1,0 +1,12 @@
+td{
+    border-top: 3px solid;
+    border-color: (41, 43, 44);
+}
+
+thead{
+  border-top: none;
+}
+
+body {
+  background-color: #dddddd;
+}
