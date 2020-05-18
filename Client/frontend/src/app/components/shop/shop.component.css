@@ -8,6 +8,20 @@ body {
     text-align: center;
 }
 
+.shopping-list{
+    position:fixed;
+    width:70px;
+    float:right;
+    height:40px;
+    right: 25%;
+    top: 10%;
+}
+
+.shop {
+    border-radius: 1%;
+    border-style: none;
+}
+
 .card {
     position: relative;
     display: inline-block;
@@ -17,12 +31,18 @@ body {
     height: 200px
 }
 
+.card-text {
+    position: relative;
+    bottom: 10%;
+    font-size: small;
+}
+
 .btn-warning, .btn-primary {
     border-radius: 100%;
     position: relative;
     width: 30px;
     height: 30px;
-    left: 0%;
+    right: 33%;
 }
 
 .btn-success, .btn-danger {
@@ -30,5 +50,53 @@ body {
     position: relative;
     width: 30px;
     height: 30px;
-    left: 2%;
+    right: 31%;
+}
+
+.bi-info-circle-fill{
+    position: absolute;
+    left: 50%;
+    top: 10%;
+}
+
+.info {
+    color: #696969;
+}
+
+a:hover {
+    color: black;
+}
+
+.bi {
+    border-color: black;
+}
+
+.order{
+    position: relative;
+    left:40%;
+    bottom:15%;
+    width: 20px;
+    height: 20px;
+}
+
+.buy {
+    position: relative;
+    left:100%;
+}
+
+.bi-caret-down-fill{
+    position: relative;
+    right: 5%;
+}
+
+.bi-caret-up-fill{
+    position: relative;
+    left: 5%;
+}
+
+.number {
+    position: relative;
+    width: 15%;
+    height: 40%;
+    left: 15%
 }

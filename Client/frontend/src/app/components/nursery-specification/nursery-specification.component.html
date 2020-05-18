@@ -56,28 +56,43 @@
         </div> 
     </div>
     <br>
-    <div class="nursery">
+    <button type="button" class="btn btn-secondary nursery_button" (click)="toggleView()">Nursery</button>
+    <br>
+    <br>
+    <div class="joker" *ngIf="showNursery==false">
+    </div>
+    <div class="nursery" *ngIf="showNursery==true">
         <table>
             <tbody>
                 <tr *ngFor="numberH of numbersHeight, let h = index">
                     <td *ngFor="numberW of numbersWidth, let w = index">
                         <div *ngIf="seedlings[h*numbersWidth.length + w]==null">
-                            <a href="#" (mouseenter)="getSeedlingSpecification(null)" (mouseleave)="stopSeedlingSpecification(null)">
+                            <a [routerLink]="['/user/nursery/warehouse', {select_mode: 'seedling'}]" (click)="plant(h*numbersWidth.length + w)">
                                 <app-seedling [seedling]="null">
                                 </app-seedling>
                             </a>
                         </div>
-                        <div *ngIf="seedlings[h*numbersWidth.length + w]!=null">
+                        <div *ngIf="seedlings[h*numbersWidth.length + w]!=null && seedlings[h*numbersWidth.length + w].progress>=0">
                             <div  class="outer-side">
                                 <div class="inner-side">
                                     <div class="front-side">
-                                        <app-seedling [seedling]="seedlings[h*numbersWidth.length + w]"></app-seedling>
+                                        <a (click)="treat(seedlings[h*numbersWidth.length + w])" [routerLink]="['/user/nursery/warehouse', {select_mode: 'treatment'}]">
+                                            <app-seedling [seedling]="seedlings[h*numbersWidth.length + w]"></app-seedling>
+                                        </a>
                                     </div>
                                     <div class="back-side">
-                                        <app-seedling-specification [seedling]="seedlings[h*numbersWidth.length + w]"></app-seedling-specification>
+                                        <a (click)="treat(seedlings[h*numbersWidth.length + w])" [routerLink]="['/user/nursery/warehouse', {select_mode: 'treatment'}]">
+                                            <app-seedling-specification [seedling]="seedlings[h*numbersWidth.length + w]"></app-seedling-specification>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div *ngIf="seedlings[h*numbersWidth.length + w]!=null && seedlings[h*numbersWidth.length + w].progress<0">
+                            <a title="This spot is currently unavailable.">
+                                <app-seedling [seedling]="seedlings[h*numbersWidth.length + w]">
+                                </app-seedling>
+                            </a>
                         </div>
                     </td>
                 </tr>

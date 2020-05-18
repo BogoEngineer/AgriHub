@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="info">
+        <div class="card text">
+            <div class="card-body">
+                <p class= "boyo">Comments:</p>
+                <p class="name">Name: {{product.name}}</p>
+                <p class="company">Company: {{product.comp}}</p>
+                <p class="ratingt">Rating: {{product.average_rating}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="reviews">
+        <div class="card" style="width: 18rem; position: relative; left:10%;" *ngFor="let review of reviews">
+            <div class="card-body" *ngIf="review.hide==null">
+                <h5 class="card-title">{{review.user}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Rating: {{review.rating}}</h6>
+                <p class="card-text">{{review.comment}}</p>
+                <a href="javascript:void(0)" role="button" (click)="hideReview(review)" class="card-link">Hide</a>
+            </div>
+        </div>
+    </div>
+    <div [ngClass]="{'leave-comment': show == true, 'leave-comment2': show == false}">
+        <a href="javascript:void(0)" (click)="toggle()">
+            <svg class="bi bi-chevron-compact-down" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg" *ngIf="show==false">
+                <path fill-rule="evenodd"
+                    d="M1.553 6.776a.5.5 0 01.67-.223L8 9.44l5.776-2.888a.5.5 0 11.448.894l-6 3a.5.5 0 01-.448 0l-6-3a.5.5 0 01-.223-.67z"
+                    clip-rule="evenodd" />
+            </svg>
+            <svg class="bi bi-chevron-compact-up" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg" *ngIf="show==true">
+                <path fill-rule="evenodd"
+                    d="M7.776 5.553a.5.5 0 01.448 0l6 3a.5.5 0 11-.448.894L8 6.56 2.224 9.447a.5.5 0 11-.448-.894l6-3z"
+                    clip-rule="evenodd" />
+            </svg>
+        </a>
+        <h5 class="h5">Leave a comment!</h5>
+        <hr size="30">
+        <div class="body" *ngIf="show==true">
+            <input type="number" value="3" min="1" max="5" class="rating" [(ngModel)]="new_review.rating">
+            <label for="exampleFormControlTextarea1" class="label"></label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" class="comment" name="namae"
+                [(ngModel)]="new_review.comment" placeholder="Your comment..."></textarea>
+            <button type="button" class="btn btn-dark" (click)="leaveReview()">Submit</button>
+        </div>
+    </div>
+
+</body>
+
+</html>

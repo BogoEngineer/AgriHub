@@ -16,28 +16,50 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let product of products">
+                <tr *ngFor="let product of products, let i = index">
                     <td>
                         <div class="card border-dark mb-3 shadow-lg" style="max-width: 18rem;">
                             <div class="card-header">
-                                <button type="button" class="btn btn-warning" *ngIf="product.type=='seedling'"></button>
-                                <button type="button" class="btn btn-primary" *ngIf="product.type=='treatment'"></button>
-                                <button type="button" class="btn btn-success" *ngIf="product.available==true"></button>
-                                <button type="button" class="btn btn-danger" *ngIf="product.available==false"></button>
-                                <svg class="bi bi-star-half" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M5.354 5.119L7.538.792A.516.516 0 018 .5c.183 0 .366.097.465.292l2.184 4.327 4.898.696A.537.537 0 0116 6.32a.55.55 0 01-.17.445l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256a.519.519 0 01-.146.05c-.341.06-.668-.254-.6-.642l.83-4.73L.173 6.765a.55.55 0 01-.171-.403.59.59 0 01.084-.302.513.513 0 01.37-.245l4.898-.696zM8 12.027c.08 0 .16.018.232.056l3.686 1.894-.694-3.957a.564.564 0 01.163-.505l2.906-2.77-4.052-.576a.525.525 0 01-.393-.288L8.002 2.223 8 2.226v9.8z" clip-rule="evenodd"/>
-                                  </svg>
+                                <a (click)="getProductSpecification(product)" class="info" title="get product specification">
+                                    <svg class="bi bi-info-circle-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M8 16A8 8 0 108 0a8 8 0 000 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"/>
+                                    </svg>
+                                </a>
+                                <button type="button" class="btn btn-warning" title="This product has type of seedling" *ngIf="product.type=='seedling'"></button>
+                                <button type="button" class="btn btn-primary" title="This product has type of treatment"  *ngIf="product.type=='treatment'"></button>
+                                <button type="button" class="btn btn-success" title="This product is available" *ngIf="product.available==true"></button>
+                                <button type="button" class="btn btn-danger" title="This product is unavailable"  *ngIf="product.available==false"></button>
+                                <input type="checkbox" title="Order product" [disabled]="product.available==false" class="order" [attr.id]="product.name + product.comp" (click)="changeList({
+                                    name: product.name,
+                                    comp: product.comp,
+                                    price: product.price,
+                                    index: i+1,
+                                    company: product.company
+                                })">
+                                <input type="number" class="number"  value="1" min="1" [attr.max]="product.quantity" [attr.id]="product.name + product.comp +'num'" [disabled]="product.available==false">
                             </div>
                             <div class="card-body text-dark">
                               <h5 class="card-title">{{product.name}}</h5>
                               <p class="card-text">
                                   company: {{ product.comp }}
-                              </p>
-                              <p class="card-text">
-                                quantity: {{ product.quantity }}
-                              </p>
-                              <p class="card-text">
-                                average rating: {{ product.average_rating }}
+                                  <br>
+                                  quantity: {{ product.quantity }}
+                                  <br>
+                                  price: {{ product.price }}
+                                  <br>
+                                  average rating: 
+                                  <ng-container *ngFor="let star of stars, let i = index">
+                                    <svg class="bi bi-star-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="product.average_rating-i>=1">
+                                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                    </svg>
+                                    <svg class="bi bi-star-half" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="product.average_rating-i>0 && product.average_rating-i<1">
+                                        <path fill-rule="evenodd" d="M5.354 5.119L7.538.792A.516.516 0 018 .5c.183 0 .366.097.465.292l2.184 4.327 4.898.696A.537.537 0 0116 6.32a.55.55 0 01-.17.445l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256a.519.519 0 01-.146.05c-.341.06-.668-.254-.6-.642l.83-4.73L.173 6.765a.55.55 0 01-.171-.403.59.59 0 01.084-.302.513.513 0 01.37-.245l4.898-.696zM8 12.027c.08 0 .16.018.232.056l3.686 1.894-.694-3.957a.564.564 0 01.163-.505l2.906-2.77-4.052-.576a.525.525 0 01-.393-.288L8.002 2.223 8 2.226v9.8z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <svg class="bi bi-star" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="product.average_rating-i<=0">
+                                        <path fill-rule="evenodd" d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 00-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 00-.163-.505L1.71 6.745l4.052-.576a.525.525 0 00.393-.288l1.847-3.658 1.846 3.658a.525.525 0 00.393.288l4.052.575-2.906 2.77a.564.564 0 00-.163.506l.694 3.957-3.686-1.894a.503.503 0 00-.461 0z" clip-rule="evenodd"/>
+                                      </svg>
+                                  </ng-container>
+                                  ({{ product.average_rating.toFixed(2) }})
                               </p>
                             </div>
                         </div>
@@ -45,7 +67,34 @@
                 </tr>
             </tbody>
         </table>
-
+    </div>
+    <div class="shopping-list">
+        <table class="table table-striped table-borderless table-dark shadow-lg shop">
+            <thead>
+              <tr>
+                <th>
+                    <h5 style="position: relative; left:10%;">Shopping cart</h5>
+                </th>
+              </tr>
+              <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Company</th>
+                  <th>Price</th>
+                  <th>Number</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of shopping_items">
+                <th scope="row">{{item.index}}</th>
+                <td>{{item.name}}</td>
+                <td>{{item.comp}}</td>
+                <td>{{item.price}}</td>
+                <td>{{item.number}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="button" class="btn btn-dark buy" (click)="buyProducts()">Order</button>
     </div>
 </body>
 </html>

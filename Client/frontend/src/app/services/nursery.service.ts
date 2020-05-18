@@ -35,4 +35,20 @@ export class NurseryService {
     const url = `http://${this.host}/users/${this.userId}/nurseries/${this.nurseryId}&${value}&${state}`;
     return this.http.put<any>(url, {});
   }
+
+  removeSeedling(seedling){
+    const idNur = JSON.parse(localStorage.getItem('nurseryInfo'))._id;
+    const url = `http://${this.host}/users/:id/nurseries/${idNur}/seedlings/${seedling._id}`;
+    return this.http.delete(url);
+  }
+
+  addNursery(nursery){
+    const url = `http://${this.host}/users/5ea5606f9162bf6e70ec26cf/nurseries/`;
+    return this.http.put<any>(url, {
+      name: nursery.name,
+      location: nursery. place,
+      width: nursery.width,
+      height: nursery.height
+    });
+  }
 }

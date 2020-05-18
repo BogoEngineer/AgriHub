@@ -208,7 +208,8 @@ exports.handleOrder = async (req, res, next) => {
 exports.deliverOrder = async (req, res) => {
     user_nursery = query_result.nursery;
     await Product.findByIdAndUpdate(query_result.product, 
-        {nursery: user_nursery});
+        {nursery: user_nursery,
+        inWarehouse: true});
     
     query_result.status = "delivered";
     query_result.save();

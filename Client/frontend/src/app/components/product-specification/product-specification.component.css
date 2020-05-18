@@ -1,0 +1,131 @@
+html {
+    min-height: 100vh;
+    height: 100vh;
+}
+
+body {
+    min-height: 100vh;
+    height: 100vh;
+    background-image: url('/assets/resources/shopping181.png');
+}
+
+.reviews {
+    position: relative;
+    top:5%;
+    width: 100%;
+    background-image: url('/assets/resources/shopping181.png');
+}
+
+.leave-comment {
+    background-color: #BEBEBE;
+    border-radius: 2%;
+    position: fixed;
+    top: 25%;
+    left: 60%;
+    width: 40%;
+    height: 40%;
+}
+
+.leave-comment2 {
+    background-color: #BEBEBE;
+    border-radius: 2%;
+    position: fixed;
+    top: 25%;
+    left: 60%;
+    width: 40%;
+    height: 6%;
+}
+
+.h5 {
+    position: relative;
+    top: 2%;
+    left: 40%;
+}
+
+.rating {
+    position: absolute;
+    width: 5%;
+    height: 15%;
+    top: 0%;
+    left: 75%;
+    border-radius: 10%;
+    border-style: solid;
+}
+
+.comment {
+    position: relative;
+    width: 90%;
+    height: 50%;
+    left: 5%;
+    top: 7%;
+    border-radius: 1%;
+}
+
+.btn-dark {
+    position: absolute;
+    top: 0%;
+    left: 82%;
+}
+
+.bi-chevron-compact-down, .bi-chevron-compact-up {
+    position: absolute;
+    left: 2%;
+    top: 1%;
+    color: #696969;
+}
+
+.body {
+    position: relative;
+    height: 100%;
+}
+
+.label {
+    position: relative; 
+    top: 5%;
+    left:5%;
+    width: 50%;
+}
+
+.info {
+    position: relative;
+    top: 5%;
+    color: #BEBEBE;
+    left: 10%;
+    width: 80%;
+}
+
+.boyo {
+    position: absolute;
+    width: 25%;
+    top: 10%;
+    left: 5%;
+    color: #696969;
+    font-style: italic;
+}
+
+.name {
+    position: absolute;
+    width: 25%;
+    top: 5%;
+    left: 30%;
+    color: #696969;
+    font-style: italic;
+}
+
+.company {
+    position: absolute;
+    width: 25%;
+    top: 5%;
+    left: 55%;
+    color: #696969;
+    font-style: italic;
+}
+
+.ratingt {
+    position: absolute;
+    width: 25%;
+    top: 5%;
+    left: 80%;
+    color: #696969;
+    font-style: italic;
+}

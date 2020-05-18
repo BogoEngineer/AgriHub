@@ -6,11 +6,12 @@
     <title>Seedling</title>
 </head>
 <body>
-    <img src='assets/resources/patch with hole.png' alt="seedling" *ngIf="seedling==null">
+    <img src='assets/resources/no hole.png' alt="seedling" *ngIf="seedling==null">
     <div *ngIf="seedling!=null">
-        <img src='assets/resources/first stage seedling.png' alt="seedling" *ngIf="seedling.progress<=33">
+        <img src='assets/resources/first stage seedling.png' alt="seedling" *ngIf="seedling.progress<=33 && seedling.progress>=0">
         <img src='assets/resources/second stage seedling.png' alt="seedling" *ngIf="seedling.progress>33 && seedling.progress<=66">
         <img src='assets/resources/third stage seedling.png' alt="seedling" *ngIf="seedling.progress>66">
+        <img src='assets/resources/patch with hole.png' alt="seedling" *ngIf="seedling.progress<0">
     </div>
 </body>
 </html>

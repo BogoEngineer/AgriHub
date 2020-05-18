@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
-  role: String;
+  role: String = "";
   //User
   first_name: String;
   last_name: String;

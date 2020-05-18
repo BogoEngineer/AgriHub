@@ -1,5 +1,33 @@
+html {
+  min-height: 100vh;
+  height: 100vh;
+  background-image: url('/assets/resources/shopping181.png');
+}
+
+body {
+  min-height: 100vh;
+  height: 100vh;
+  background-image: url('/assets/resources/shopping181.png');
+}
+
+.view {
+  position: relative;
+  top: 3%;
+  width: 96%;
+  left: 2%;
+}
+
+table {
+  border-style: none;
+  border-radius: 1%;
+}
+
+th {
+  color: grey;
+}
+
 td{
-    border-top: 3px solid;
+    border-top: 1px solid;
     border-color: (41, 43, 44);
 }
 
@@ -7,6 +35,6 @@ thead{
   border-top: none;
 }
 
-body {
-  background-color: #dddddd;
+.bi-plus-circle, .bi-dash-circle {
+  color: #dddddd;
 }

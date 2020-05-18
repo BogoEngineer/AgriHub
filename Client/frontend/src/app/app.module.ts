@@ -12,20 +12,25 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { UserHomeComponent } from './components/user-home/user-home.component';
 
 import { NurseryService } from './services/nursery.service';
-import { ShopService } from './services/shop.service'
+import { ShopService } from './services/shop.service';
+import { WarehouseService } from './services/warehouse.service';
 
 import { NurserySpecificationComponent } from './components/nursery-specification/nursery-specification.component';
 import { SeedlingComponent } from './components/seedling/seedling.component';
 import { SeedlingSpecificationComponent } from './components/seedling-specification/seedling-specification.component';
 import { ShopComponent } from './components/shop/shop.component';
+import { WarehouseComponent } from './components/warehouse/warehouse.component';
+import { ProductSpecificationComponent } from './components/product-specification/product-specification.component';
 
 
 const routes: Routes = [
   { path: '', component: LogInComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'user', component: UserHomeComponent},
-  { path: 'user/nursery/:id', component: NurserySpecificationComponent},
-  { path: 'user/shop', component: ShopComponent}
+  { path: 'user', component: UserHomeComponent },
+  { path: 'user/nursery/dashboard', component: NurserySpecificationComponent},
+  { path: 'user/nursery/shop', component: ShopComponent},
+  { path: 'user/nursery/warehouse', component: WarehouseComponent},
+  { path: 'user/nursery/shop/product', component: ProductSpecificationComponent}
 ];
 
 @NgModule({
@@ -38,7 +43,9 @@ const routes: Routes = [
     NurserySpecificationComponent,
     SeedlingComponent,
     SeedlingSpecificationComponent,
-    ShopComponent
+    ShopComponent,
+    WarehouseComponent,
+    ProductSpecificationComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +56,8 @@ const routes: Routes = [
   ],
   providers: [
     NurseryService,
-    ShopService
+    ShopService,
+    WarehouseService
   ],
   bootstrap: [AppComponent]
 })

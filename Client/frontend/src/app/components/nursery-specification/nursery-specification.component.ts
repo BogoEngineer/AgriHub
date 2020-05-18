@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { NurseryService } from '../../services/nursery.service'
 import { Seedling } from 'src/app/models/Seedling';
@@ -16,10 +17,14 @@ export class NurserySpecificationComponent implements OnInit {
 
   show_seedling_specification: number;
   show_additional_info: boolean;
+  showNursery: boolean;
 
-  constructor(private nurseryService:NurseryService) { }
+  constructor(
+    private nurseryService:NurseryService,
+    private router: Router) { }
 
   ngOnInit(): void {
+    this.showNursery = false;
     this.show_additional_info = false;
     this.show_seedling_specification = -1;
     this.nurseryInfo = JSON.parse(localStorage.getItem('nurseryInfo'));
@@ -48,6 +53,10 @@ export class NurserySpecificationComponent implements OnInit {
     this.show_additional_info = !this.show_additional_info;
   }
 
+  toggleView(){
+    this.showNursery= !this.showNursery;
+  }
+
   change_state(value, state){
     if(state=="water"){
       this.nurseryInfo.water += value;
@@ -59,4 +68,16 @@ export class NurserySpecificationComponent implements OnInit {
     });
   }
 
+  treat(seedling){
+    if(seedling.progress < 100) localStorage.setItem('seedlingInfo', JSON.stringify(seedling));
+    if(seedling.progress >= 100){
+      this.nurseryService.removeSeedling(seedling).subscribe();
+    }
+    //this.router.navigate(['user/nursery/dashboard']);
+    location.reload();
+  }
+
+  plant(position){
+    localStorage.setItem('position', position);
+  }
 }

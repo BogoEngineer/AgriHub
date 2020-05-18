@@ -3,7 +3,6 @@ import { NurseryService } from '../../services/nursery.service';
 import { Router } from '@angular/router'
 
 import { Nursery } from '../../models/nursery';
-import { isNgContainer } from '@angular/compiler';
 
 @Component({
   selector: 'app-user-home',
@@ -13,6 +12,14 @@ import { isNgContainer } from '@angular/compiler';
 export class UserHomeComponent implements OnInit {
   user_id: any;
   nurseries: Nursery[];
+  add_view: boolean = false;
+
+  new_nursery: Nursery= {
+    name: "",
+    place: "",
+    width: "",
+    height: ""
+  }
 
   constructor(
     private nurseryService:NurseryService,
@@ -30,7 +37,7 @@ export class UserHomeComponent implements OnInit {
   }
 
   specifications(info: any){
-    this.router.navigate([`user/nursery/${info._id}`]);
+    this.router.navigate([`user/nursery/dashboard`]);
     localStorage.setItem('nurseryInfo', JSON.stringify({
       _id: info._id,
       width: info.width,
@@ -43,5 +50,20 @@ export class UserHomeComponent implements OnInit {
       water: info.water,
       temperature: info.temperature
     }));
+  }
+
+  toggleView(){
+    this.add_view = !this.add_view;
+  }
+
+  addNursery(){
+    this.nurseryService.addNursery(this.new_nursery).subscribe();
+    this.new_nursery.temperature = 18;
+    this.new_nursery.water = 200;
+    this.new_nursery.location = this.new_nursery.space;
+    this.new_nursery.num_of_seedlings = 0;
+    this.new_nursery.free_space = this.new_nursery.width * this.new_nursery.height;
+    this.add_view = false;
+    this.nurseries.push(this.new_nursery);
   }
 }

@@ -9,7 +9,7 @@ const {
     getNurseries,
     deleteNursery,
     addNursery,
-    orderProduct,
+    orderProducts,
     cancelOrder,
     plantSeedling,
     removeSeedling,
@@ -20,7 +20,8 @@ const {
     getOrders,
     commentProduct,
     getProductSpecification,
-    goShopping
+    goShopping,
+    perish
 } = require('../functionalities/users.js');
 
 const User = require('../collections/User.js');
@@ -50,8 +51,8 @@ router.route('/:id/shop')
 router.route('/:id/shop/:proName&:company')
     .get(getProductSpecification);
 
-router.route('/:id/shop/:proName&:company&:idNur')
-    .put(orderProduct);
+router.route('/:id/shop/:idNur')
+    .put(orderProducts);
 
 router.route('/:id/shop/:proName&:company/comment')
     .put(commentProduct);
@@ -65,14 +66,16 @@ router.route('/:id/nurseries/:idNur/warehouse')
 router.route('/:id/nurseries/:idNur/warehouse/orders')
     .get(getOrders)
 
-router.route('/:id/nurseries/:idNur/warehouse/orders/:idOr')
+router.route('/:id/nurseries/:idNur/warehouse/orders/:namePro&:idComp')
     .delete(cancelOrder);
 
-router.route('/:id/nurseries/:idNur&:position/seedlings/:idSeed')
-    .put(plantSeedling)
-    .delete(removeSeedling);
+router.route('/:id/seedlings/manage')
+    .put(plantSeedling);
 
-router.route('/:id/seedlings/:idSeed/treatments/:idTr')
+router.route('/:id/nurseries/:nur_id/seedlings/:seed_id')
+    .delete(removeSeedling, perish);
+
+router.route('/:id/seedlings/treat')
     .put(useTreatment);
 
 module.exports = router;

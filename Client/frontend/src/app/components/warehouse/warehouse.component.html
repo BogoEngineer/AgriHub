@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse</title>
+</head>
+
+<body>
+    <div>
+        <div class="seedlings">
+            <button type="button" class="btn btn-info" *ngIf="seedling_view==true"
+                (click)="change_view(false)">Treatments</button>
+            <table *ngIf="seedling_view==true">
+                <tbody>
+                    <tr *ngFor="let product of products">
+                        <td *ngIf="product.type=='seedling'">
+                            <div class="card border-dark mb-3" style="max-width: 18rem;">
+                                <div class="card-body text-dark">
+                                    <h5 class="card-title">{{product.name}}</h5>
+                                    <p class="card-text">
+                                        company: {{product.comp}}
+                                        <br>
+                                        quantity: {{product.quantity}}
+                                    </p>
+                                </div>
+                                <div class="card-footer border-dark" *ngIf="select_mode=='seedling'">
+                                    <button type="button" class="btn btn-dark" (click)="plantSeedling(product.name, product.company)">plant</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let order of orders">
+                        <td *ngIf="order.type=='seedling'">
+                            <div class="card border-dark mb-3" style="max-width: 18rem;">
+                                <div class="card-body text-dark">
+                                    <h5 class="card-title">{{order.name}}</h5>
+                                    <p class="card-text">
+                                        company: {{order.comp}}
+                                        <br>
+                                        quantity: {{order.quantity}}
+                                        <br>
+                                    </p>
+                                    <p class="order">Order</p>
+                                </div>
+                                <div class="card-footer border-dark">
+                                    <button type="button" class="btn btn-dark" (click)="cancelOrder(order.name, order.company)">cancel</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="treatments">
+            <button type="button" class="btn btn-success" *ngIf="seedling_view==false"
+                (click)="change_view(true)">Seedlings</button>
+            <table *ngIf="seedling_view==false">
+                <tbody>
+                    <tr *ngFor="let product of products">
+                        <td *ngIf="product.type=='treatment'">
+                            <div class="card border-dark mb-3 shadow-lg" style="max-width: 18rem;">
+                                <div class="card-body text-dark">
+                                    <h5 class="card-title">{{product.name}}</h5>
+                                    <p class="card-text">
+                                        company: {{product.comp}}
+                                        <br>
+                                        quantity: {{product.quantity}}
+                                    </p>
+                                </div>
+                                <div class="card-footer border-dark" *ngIf="select_mode=='treatment'">
+                                    <button type="button" class="btn btn-dark" (click)="useTreatment(product.name, product.company)">apply</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let order of orders">
+                        <td *ngIf="order.type=='treatment'">
+                            <div class="card border-dark mb-3" style="max-width: 18rem;">
+                                <div class="card-body text-dark">
+                                    <h5 class="card-title">{{order.name}}</h5>
+                                    <p class="card-text">
+                                        company: {{order.comp}}
+                                        <br>
+                                        quantity: {{order.quantity}}
+                                    </p>
+                                    <p class="order">Order</p>
+                                </div>
+                                <div class="card-footer border-dark">
+                                    <button type="button" class="btn btn-dark" (click)="cancelOrder(order.name, order.company)">cancel</button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="options">
+        <div class="form-check" id="field">
+            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="name"
+                checked>
+            <label class="form-check-label" for="exampleRadios1">
+                name
+            </label>
+            <br>
+            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="company"
+            checked>
+            <label class="form-check-label" for="exampleRadios1">
+                company
+            </label>
+            <br>
+            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="quantity"
+            checked>
+            <label class="form-check-label" for="exampleRadios1">
+                quantity
+            </label>
+        </div>
+        <div class="form-group" id="function">
+            <select class="form-control" id="exampleFormControlSelect1" [(ngModel)]="options" name="abc">
+                <option value="filter">filter</option>
+                <option value="sort">sort</option>
+            </select>
+        </div>
+        <button type="button" class="btn btn-outline-primary" (click)="apply()">Apply</button>
+        <button type="button" class="btn btn-outline-primary undo" (click)="undo()">Undo</button>
+        <input class="form-control form-control-sm" type="text" placeholder="argument" id="argument" *ngIf="options=='filter'">
+    </div>
+</body>
+
+</html>

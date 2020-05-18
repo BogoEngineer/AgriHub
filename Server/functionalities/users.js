@@ -19,18 +19,18 @@ exports.getUsers = async (req, res, next) => {
 // PUT /users/:id
 // privilege: Admin and LoggedInUser
 exports.updateUser = async (req, res, next) => {
-    try{
+    try {
         const query_result = await User.findByIdAndUpdate(req.params.id, req.body);
         return res.status(200).json({
             success: true,
         });
-    }catch(err){
+    } catch (err) {
         console.log(err);
         return res.status(400).json({
-            success:false
+            success: false
         })
     }
-    
+
 }
 
 // PUT /users/:id
@@ -46,13 +46,13 @@ exports.getProfile = async (req, res, next) => {
 // PUT /users/
 // privilege: Public
 exports.createUser = async (req, res, next) => {
-    try{
+    try {
         const query_result = await User.create(req.body);
         return res.status(201).json({
             success: true,
             data: query_result
         });
-    }catch(err){
+    } catch (err) {
         console.log(err);
         return res.status(400).json({
             success: false
@@ -63,14 +63,14 @@ exports.createUser = async (req, res, next) => {
 // DEL /users/:id
 // privilege: Admin
 exports.deleteUser = async (req, res, next) => {
-    try{
+    try {
         const query_result = await User.findById(req.params.id);
         query_result.remove();
         res.status(200).json({
             success: true,
             data: query_result
         });
-    }catch(err){
+    } catch (err) {
         console.log(err);
         res.status(400).json({
             success: false
@@ -81,7 +81,7 @@ exports.deleteUser = async (req, res, next) => {
 // GET /users/:id/nurseries
 // privilege: LoggedInUser
 exports.getNurseries = async (req, res, next) => {
-    const query_result = await Nursery.find({user: req.params.id});
+    const query_result = await Nursery.find({ user: req.params.id });
 
     res.status(200).json({
         success: true,
@@ -113,8 +113,8 @@ exports.deleteNursery = async (req, res, next) => {
 
 // PUT /users/:id/nurseries/:idNur&:add&:parameter
 // privilege: LoggedInUsers
-exports.changeState = async(req, res, next) => {
-    if(req.params.parameter == "water"){
+exports.changeState = async (req, res, next) => {
+    if (req.params.parameter == "water") {
         const query_result = await Nursery.findById(req.params.idNur);
         query_result.water += parseInt(req.params.add);
         query_result.save();
@@ -122,7 +122,7 @@ exports.changeState = async(req, res, next) => {
             success: true,
             data: query_result
         });
-    }else if(req.params.parameter == "temperature"){
+    } else if (req.params.parameter == "temperature") {
         const query_result = await Nursery.findById(req.params.idNur);
         query_result.temperature += parseInt(req.params.add);
         query_result.save();
@@ -130,7 +130,7 @@ exports.changeState = async(req, res, next) => {
             success: true,
             data: query_result
         });
-    }else{
+    } else {
         console.log(err);
         res.status(400).json({
             success: false
@@ -142,10 +142,10 @@ exports.changeState = async(req, res, next) => {
 // privilege: LoggedInUsers
 exports.getSeedlings = async (req, res, next) => {
     const query_result = await Product.find({
-        type: "seedling", 
+        type: "seedling",
         nursery: req.params.idNur,
         inWarehouse: false
-    }).populate({path: 'company', select:'full_name'});
+    }).populate({ path: 'company', select: 'full_name' });
     res.status(200).json({
         success: true,
         data: query_result
@@ -157,11 +157,17 @@ exports.getSeedlings = async (req, res, next) => {
 // privilege: LoggedInUsers
 exports.getProducts = async (req, res, next) => {
     query_result = await Product.aggregate([
-        {"$match" : {inWarehouse: true, nursery: mongoose.Types.ObjectId(req.params.idNur)}}, 
-        {"$group" : {_id : {name:"$name", company:"$company"}, quantity: {$sum: 1}}}, 
-        {"$project" : {_id:0, name:"$_id.name", company:"$_id.company", quantity: "$quantity"}}
+        { "$match": { inWarehouse: true, nursery: mongoose.Types.ObjectId(req.params.idNur) } },
+        { "$group": { _id: { name: "$name", company: "$company", type: "$type" }, quantity: { $sum: 1 } } },
+        { "$project": { _id: 0, name: "$_id.name", company: "$_id.company", type: "$_id.type", quantity: "$quantity" } },
+        { $lookup: { from: 'Company', localField: 'company', foreignField: '_id', as: 'cmp' } }
     ]);
-    
+
+    for (const item of query_result) {
+        item.comp = item.cmp[0].full_name;
+        delete item.cmp;
+    }
+
     res.status(200).json({
         success: true,
         data: query_result
@@ -171,56 +177,78 @@ exports.getProducts = async (req, res, next) => {
 // GET /users/:id/nurseries/:idNur/warehouse/orders
 // privilege: LoggedInUser
 exports.getOrders = async (req, res, next) => {
-    const query_result = await Order.find({nursery: req.params.idNur});
+    query_result = await Order.aggregate([
+        { "$match": { status: { $in: ['on hold', 'travelling'] }, nursery: mongoose.Types.ObjectId(req.params.idNur) } },
+        { $lookup: { from: 'Product', localField: 'product', foreignField: '_id', as: 'prod' } },
+        { "$group": { _id: { name: "$prod.name", company: "$company", type: "$prod.type" }, quantity: { $sum: 1 } } },
+        { "$project": { _id: 0, name: "$_id.name", company: "$_id.company", type: "$_id.type", quantity: "$quantity" } },
+        { $lookup: { from: 'Company', localField: 'company', foreignField: '_id', as: 'cmp' } }
+    ]);
+    for (const item of query_result) {
+        item.comp = item.cmp[0].full_name;
+        item.name = item.name[0];
+        item.type = item.type[0];
+        delete item.cmp;
+    }
     res.status(200).json({
         success: true,
         data: query_result
     });
 }
-// DELETE users/:id/nurseries/:idNur/warehouse/orders/:idOr
+// DELETE users/:id/nurseries/:idNur/warehouse/orders/:namePro&:idComp
 // privilege: LoggedInUser
 exports.cancelOrder = async (req, res, next) => {
-    const query_result = await Order.findById(req.params.idOr);
-    if(query_result.status == "delivered") {
-        res.status(400).json({
-            success: false,
-            explanation: "This order has already been delivered!"
-        });
-    }else{
-        company = await Company.findById(query_result.company);
-        company.postman += 1;
-        company.save();
-        await Product.findByIdAndUpdate(query_result.product, {
-            available: true
-        }); // returns an item to the shop ---- not tested
-        query_result.remove();
-        res.status(200).json({
-            success: true,
-            data: query_result
-        });
+    const query_result = await Order.aggregate([
+        { $lookup: { from: 'Product', localField: 'product', foreignField: '_id', as: 'prod' }},
+        { $project: {name:"$prod.name", company: "$company", user: "$user", nursery: "$nursery", status: "$status"}},
+        { "$match": {
+            status: { $in: ['on hold', 'travelling'] },
+            company: mongoose.Types.ObjectId(req.params.idComp),
+            nursery: mongoose.Types.ObjectId(req.params.idNur),
+            $expr: {$eq: ["$name" , [req.params.namePro]]}
+        }},
+    ]);
+    company = await Company.findById(req.params.idComp);
+    company.postman += 1;
+    company.save();
+    let pr = await Product.find({
+        name: req.params.namePro,
+        company: req.params.idComp,
+        available: false,
+        inWarehouse: false,
+        nursery: null
+    });
+    pr.forEach(product => {
+        product.available = true;
+        product.nursery = null; 
+        product.save();
+    });
+    for (order of query_result){
+        await Order.findByIdAndRemove(order._id);
     }
+    res.status(200).json({
+        success: true,
+        data: query_result
+    });
 }
 
-// PUT /users/:id/nurseries/:idNur&:position/seedlings/:idSeed
+// PUT /users/:id/seedlings/manage
 // privilege: LoggedInUsers
 exports.plantSeedling = async (req, res, next) => {
-    const query_result = await Product.findById(req.params.idSeed);
-    if(query_result.nursery){
-        res.status(400).json({
-            success: false,
-            explanation: "This seedling is already planted"
-        });
-        return;
-    }else{
-        await query_result.update({
+    data = req.body.data;
+    const query_result = await Product.findOneAndUpdate({
+        company: data.company,
+        name: data.name,
+        inWarehouse: true,
+        nursery: data.nursery
+    },
+        {
             inWarehouse: false,
-            position: req.params.position,
-            plantedAt: Date.now(),
-            //nursery: mongoose.Types.ObjectId(req.params.idNur) ovo se radi u OrderProduct 
+            position: data.position,
+            plantedAt: Date.now()
         });
-        query_result.save();
-    }
-    const update = await Nursery.findById(req.params.idNur);
+
+    const update = await Nursery.findById(data.nursery);
     update.num_of_seedlings += 1;
     update.save();
     res.status(200).json({
@@ -229,54 +257,78 @@ exports.plantSeedling = async (req, res, next) => {
     });
 }
 
-// DELETE /users/:id/nurseries/:idNur&:position/seedlings/:idSeed
+// DELETE /users/:id/nurseries/:nur_id/seedlings/:seed_id
 // privilege: LoggedInUsers
 exports.removeSeedling = async (req, res, next) => {
-    const query_result = await Product.findById(req.params.idSeed);
-    const update = await Nursery.findById(req.params.idNur);
+    let data = req.params;
+    const query_result = await Product.findByIdAndUpdate(data.seed_id, { progress: -1 });
+    const update = await Nursery.findById(data.nur_id);
     update.num_of_seedlings -= 1;
     update.save();
-    query_result.remove();
+    let day = 60000 //86400000
+    setTimeout(next, day);
     res.status(200).json({
         success: true,
         data: query_result
     });
 }
 
-// PUT /users/:id/seedlings/:idSeed/treatments/:idTr
+// remove seedling after a day
+exports.perish = async (req, res) => {
+    await Product.findByIdAndRemove(req.params.seed_id);
+}
+
+// PUT /users/:id/seedlings/treat
 // privilege: LoggedInUsers
 exports.useTreatment = async (req, res, next) => {
     // better mechanism for solving this is needed
-    req.body.treatment = req.params.idTr;
-    const query_result = await Product.findByIdAndUpdate(req.params.idSeed, req.body);
+    let data = req.body.data;
+    const treatment = await Product.findOneAndUpdate(
+        {
+            name: data.tr_name,
+            company: data.tr_company,
+            inWarehouse: true,
+            nursery: data.nur_id
+        },
+        {
+            inWarehouse: false
+        });
+    const seedling = await Product.findOneAndUpdate(
+        {
+            nursery: data.nur_id,
+            name: data.sd_name,
+            company: data.sd_company,
+            position: data.sd_position
+        },
+        {
+            treatment: treatment._id
+        }) //this is where you update seedlings progress
     res.status(200).json({
         success: true,
-        data: query_result
+        data: seedling.position
     });
 }
 
 // GET /users/:id/shop
 // privilege: LoggedInUser
 exports.goShopping = async (req, res, next) => {
-    const shop = await Product.aggregate([
-        {$match: {}}, // available: true isn't needed bcs we want to show availability (in shop) field to user
-        {$group: {_id: {name:"$name", company:"$company", type:"$type"}, quantity: {$sum: 1}, available_arr: {$push: "$available"}}},
-        {$project: {_id:0, name:"$_id.name", company: '$_id.company', type:"$_id.type", quantity: "$quantity", available: { $in: [true, "$available_arr"]}}},
-        {$lookup: {from: 'Company', localField: 'company', foreignField: '_id', as: 'cmp'}}
+    const shop = await Product.aggregate([ // available: maybe true isn't needed bcs we want to show availability (in shop) field to user
+        { $group: { _id: { name: "$name", company: "$company", type: "$type", price: "$price" }, quantity: { $sum: 1 }, available_arr: { $push: "$available" } } },
+        { $project: { _id: 0, name: "$_id.name", company: '$_id.company', type: "$_id.type", price: "$_id.price", quantity: "$quantity", available: { $in: [true, "$available_arr"] }, available_arr: "$available_arr" } },
+        { $lookup: { from: 'Company', localField: 'company', foreignField: '_id', as: 'cmp' } }
     ]);
-
     //shop.company = (await Company.findById(shop.company)).name;
 
     // da li ovde treba da bude aktuelna kolicina u prodavnici ili kolicina koju je kompanija unela pri unosu proizvoda u prodavnicu??
 
     for (const item of shop) {
+        item.quantity = item.available_arr.filter(av => { if (av) return av; }).length;
         item.comp = item.cmp[0].full_name;
         delete item.cmp;
-        delete item.company;
         aggregObject = (await Review.getAverageRating(item.name, item.company))[0];
-        if(aggregObject){
+        if (aggregObject) {
             item.average_rating = aggregObject.averageRating;
-        }else{
+        } else {
             item.average_rating = 0;
         }
     }
@@ -308,79 +360,75 @@ exports.getProductSpecification = async (req, res, next) => {
         success: true,
         data: result
     })
-} 
+}
 
-// PUT /users/:id/shop/:proName&:company&:idNur
+// PUT /users/:id/shop/:idNur
 // privilege: LoggedInUser
-exports.orderProduct = async (req, res, next) => {
-    try{
-        const product = await Product.findOne({
-            name: req.params.proName,
-            company: req.params.company
-        })
-        product.nursery = req.params.idNur;
-        product.save();
-        req.body.company = req.params.company;
-        req.body.product = product._id;
-        req.body.user = req.params.id;
-        req.body.nursery = req.params.idNur;
-        req.body.date = Date.now();
-        const query_result = await Order.create(req.body);
-        //Updating the shop -- fix for quantity (?)
-        await Product.findByIdAndUpdate(product._id, 
-            {available: false})
-
-        company = await Company.findById(req.params.company);
-        company.postman -= 1;
-        company.save();
-        
-        res.status(201).json({
-            success: true,
-            data: query_result
+exports.orderProducts = async (req, res, next) => {
+    try {
+        let products = req.body.data;
+        products.forEach(product => {
+            let iterable = [];
+            for (let i = 0; i < product.number; i++) {
+                iterable.push(i);
+            }
+            for (let num of iterable) {
+                this.orderOneProduct(product, req.params.idNur, req.params.id);
+            }
         });
-    }catch(err){
-        console.log(err);
+        res.status(201).json({
+            success: true
+        });
+    } catch (err) {
         res.status(400).json({
             success: false
         });
     }
 }
 
+//helper
+exports.orderOneProduct = async (req, idNur, idUser) => {
+    const product = await Product.findOneAndUpdate({
+        name: req.name,
+        company: req.company,
+        available: true
+    }, { available: false });
+    let temp = {};
+    temp.company = req.company;
+    temp.product = product._id;
+    temp.user = idUser;
+    temp.nursery = idNur;
+    temp.date = Date.now();
+    const query_result = await Order.create(temp);
+}
+
 // PUT /users/:id/shop/:proName&:company/comment
 // privilege: LoggedInUser
 exports.commentProduct = async (req, res, next) => {
-    const product = await Product.find({
-        name: req.params.proName,
-        company: req.params.company
-    });
-
-    const order = await Order.findOne({
-        user: req.params.id, 
-        product: product.idPro,
-        company: req.params.company
-    });
-    
-    const comment = await Review.findOne({
+    const orders = await Order.find({
         user: req.params.id,
-        product: product.name,
-        company: product.company
+        company: req.params.company
+    }).populate('product');
+
+    let ordered = false;
+
+    orders.forEach(order => {
+        if(order.product.name == req.params.proName) ordered = true;
     });
 
-    if(comment){
-        res.status(400).json({
-            success: false,
-            explanation: "This user has already reviewed this product!"
-        });
-    }else if(order == null){
+    if (!ordered) {
         res.status(400).json({
             success: false,
             explanation: "This user hasn't ordered this product yet!"
         });
-    }else{
-        req.body.user = req.params.id
-        req.body.product = product.name
-        req.body.company = product.company
-        review = await Review.create(req.body);
+    } else {
+        review = await Review.create({
+            user: mongoose.Types.ObjectId(req.params.id),
+            product: req.params.proName,
+            company: mongoose.Types.ObjectId(req.params.company),
+            rating: req.body.rating,
+            comment: req.body.comment
+        });
         res.status(200).json({
             success: true,
             data: review
