@@ -1,0 +1,70 @@
+html {
+    min-height: 100vh;
+    height: 100vh;
+    background-image: url('/assets/resources/shopping181.png');
+  }
+  
+  body {
+    min-height: 100vh;
+    height: 100vh;
+    background-image: url('/assets/resources/shopping181.png');
+  }
+  
+  .view {
+    position: relative;
+    top: 3%;
+    width: 96%;
+    left: 2%;
+  }
+  
+  table {
+    border-style: none;
+    border-radius: 1%;
+  }
+  
+  th {
+    color: grey;
+  }
+  
+  td{
+      border-top: 1px solid;
+      border-color: (41, 43, 44);
+  }
+  
+  thead{
+    border-top: none;
+  }
+  
+  .bi-plus-circle, .bi-dash-circle {
+    color: #dddddd;
+  }
+  
+  a {
+    color: white;
+  }
+  
+  .add:hover {
+    color: rgb(151, 248, 6);
+  }
+  
+  .discard:hover {
+    color: rgb(209, 51, 51);
+  }
+
+  .update:hover{
+    color: rgb(62, 183, 253);
+  }
+
+  .confirm:hover {
+    color: rgba(160, 223, 66, 0.863);
+  }
+
+  .delete:hover {
+    color:rgb(238, 84, 84);
+}
+
+  .mode {
+    position: relative;
+    top: 2%;
+    left: 45%;
+}

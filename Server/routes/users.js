@@ -1,11 +1,7 @@
 const express = require('express');
 
 const {
-    getUsers,
-    updateUser,
     getProfile,
-    createUser,
-    deleteUser,
     getNurseries,
     deleteNursery,
     addNursery,
@@ -28,14 +24,8 @@ const User = require('../collections/User.js');
 
 const router = express.Router();
 
-router.route('/')
-    .get(getUsers)
-    .put(createUser);
-
 router.route('/:id')
-    .put(updateUser)
     .get(getProfile)
-    .delete(deleteUser);
 
 router.route('/:id/nurseries')
     .get(getNurseries)

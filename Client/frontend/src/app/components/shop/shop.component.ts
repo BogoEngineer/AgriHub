@@ -3,6 +3,10 @@ import { ShopService } from '../../services/shop.service';
 import { Product } from '../../models/product';
 import { Router } from '@angular/router';
 
+import { MatTooltipModule} from '@angular/material/tooltip';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+
 @Component({
   selector: 'app-shop',
   templateUrl: './shop.component.html',
@@ -16,7 +20,8 @@ export class ShopComponent implements OnInit {
 
   constructor(
     private shopService:ShopService,
-    private router:Router) { }
+    private router:Router,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.shopping_items = []
@@ -44,16 +49,18 @@ export class ShopComponent implements OnInit {
   }
 
   buyProducts(){
-    window.alert("Thank you for ordering!");
     if(this.shopping_items.length == 0) return;
+    this.snackBar.open("Thank you for ordering!", null, {
+      duration: 2000
+    });
     this.shopService.orderProducts(this.shopping_items).subscribe(res => {
       console.log(res);
     });
-    location.reload();
+    setTimeout(window.location.reload.bind(window.location), 2000);
   }
 
   getProductSpecification(product){
     localStorage.setItem('productInfo', JSON.stringify(product));
-    this.router.navigate(['/user/nursery/shop/product']);
+    this.router.navigate(['/user/nursery/shop/product', {role:'user'}]);
   }
 }

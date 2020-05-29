@@ -13,4 +13,7 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  logOut(){
+    localStorage.clear();
+  }
 }

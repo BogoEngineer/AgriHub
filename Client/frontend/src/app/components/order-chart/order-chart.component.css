@@ -1,0 +1,26 @@
+html {
+    min-height: 100vh;
+    height: 100vh;
+    background-image: url('/assets/resources/shopping181.png');
+}
+
+body {
+    min-height: 100vh;
+    height: 100vh;
+    background-color: silver;
+}
+
+#chart {
+    position: relative;
+    top: 5%;
+    height: 100%;
+    background-color: silver;
+}
+
+h5 {
+    position: relative;
+    left: 37%;
+    top: 3%;
+    font-style: italic;
+    
+}

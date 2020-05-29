@@ -38,3 +38,15 @@ thead{
 .bi-plus-circle, .bi-dash-circle {
   color: #dddddd;
 }
+
+a {
+  color: white;
+}
+
+.add:hover {
+  color: rgb(151, 248, 6);
+}
+
+.discard:hover {
+  color: rgb(209, 51, 51);
+}

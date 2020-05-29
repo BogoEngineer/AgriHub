@@ -3,6 +3,8 @@ import { NurseryService } from '../../services/nursery.service';
 import { Router } from '@angular/router'
 
 import { Nursery } from '../../models/nursery';
+import { MatTooltip } from '@angular/material/tooltip';
+
 
 @Component({
   selector: 'app-user-home',
@@ -12,9 +14,9 @@ import { Nursery } from '../../models/nursery';
 export class UserHomeComponent implements OnInit {
   user_id: any;
   nurseries: Nursery[];
-  add_view: boolean = false;
+  addview: boolean = false;
 
-  new_nursery: Nursery= {
+  new_nursery: any= {
     name: "",
     place: "",
     width: "",
@@ -53,7 +55,7 @@ export class UserHomeComponent implements OnInit {
   }
 
   toggleView(){
-    this.add_view = !this.add_view;
+    this.addview = !this.addview;
   }
 
   addNursery(){
@@ -63,7 +65,7 @@ export class UserHomeComponent implements OnInit {
     this.new_nursery.location = this.new_nursery.space;
     this.new_nursery.num_of_seedlings = 0;
     this.new_nursery.free_space = this.new_nursery.width * this.new_nursery.height;
-    this.add_view = false;
+    this.addview = false;
     this.nurseries.push(this.new_nursery);
   }
 }

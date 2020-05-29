@@ -13,3 +13,9 @@ h4 {
     left: 15%;
     color: darkslategray;
 }
+
+.recaptcha {
+    position: relative;
+    top: 2%;
+    left: 40%;
+}

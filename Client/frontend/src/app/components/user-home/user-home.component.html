@@ -18,13 +18,13 @@
             <th scope="col">Voda</th>
             <th scope="col">Temperatura</th>
             <th>
-              <a (click)="toggleView()" href="javascript:void(0)" title="add/discard new nursery">
-                <svg class="bi bi-plus-circle" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="add_view==false">
+              <a (click)="toggleView()" href="javascript:void(0)" matTooltip="add/discard new nursery">
+                <svg class="bi bi-plus-circle" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="addview==false" class="add">
                   <path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/>
                   <path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/>
                   <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
                 </svg>
-                <svg class="bi bi-dash-circle" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="add_view==true">
+                <svg class="bi bi-dash-circle" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="addview==true" class="discard">
                   <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
                   <path fill-rule="evenodd" d="M3.5 8a.5.5 0 01.5-.5h8a.5.5 0 010 1H4a.5.5 0 01-.5-.5z" clip-rule="evenodd"/>
                 </svg>
@@ -43,7 +43,7 @@
                 <td>{{nursery.temperature}}</td>
                 <td></td>
             </tr>
-            <tr *ngIf="add_view==true">
+            <tr *ngIf="addview==true">
               <td scope="row">{{nurseries.length+1}}</td>
                 <td>
                   <input class="form-control" type="text" placeholder="Name" [(ngModel)]="new_nursery.name" name="namae">
@@ -79,9 +79,6 @@
             </tr>
         </tbody>
       </table>
-    </div>
-    <div class="add">
-
     </div>
 </body>
 </html>

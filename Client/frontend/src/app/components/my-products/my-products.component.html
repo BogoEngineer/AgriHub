@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="xd">
+        <br>
+        <table class="table table-hover table-dark">
+            <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Info</th>
+                  <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of my_products, let i = index">
+                    <td scope="row">{{i+1}}</td>
+                    <td>{{product.name}}</td>
+                    <td>{{product.type}}</td>
+                    <td>{{product.quantity}}</td>
+                    <td>
+                        <a href="javascript:void(0)"  (click)="getProductSpecification(product)" matTooltip="get specifications for {{product.name}}" matTooltipPosition="after" class="info">
+                            <svg class="bi bi-info-circle" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
+                                <path d="M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z"/>
+                                <circle cx="8" cy="4.5" r="1"/>
+                            </svg>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="javascript:void(0)"  (click)="deleteProduct(product)" matTooltip="delete {{product.name}}" matTooltipPosition="after" class="delete">
+                            <svg class="bi bi-trash" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z"/>
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" clip-rule="evenodd"/>
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <div class="addNew">
+              <mat-horizontal-stepper #stepper class="process">
+                <mat-step [stepControl]="firstFormGroup" [completed]="false">
+                  <form [formGroup]="firstFormGroup">
+                    <ng-template matStepLabel>Fill in Name</ng-template>
+                    <mat-form-field>
+                      <mat-label>Name</mat-label>
+                      <input matInput placeholder="e.g. Apple" formControlName="nameCtrl" required>
+                    </mat-form-field>
+                    <div>
+                      <button mat-button matStepperNext>Next</button>
+                    </div>
+                  </form>
+                </mat-step>
+                <mat-step [stepControl]="firstFormGroup" [completed]="false" [optional]="false">
+                    <form [formGroup]="firstFormGroup">
+                      <ng-template matStepLabel>Fill in Type</ng-template>
+                      <mat-form-field>
+                        <mat-label>Select one</mat-label>
+                        <mat-select formControlName="typeCtrl" required>
+                            <mat-option value="seedling">seedling</mat-option>
+                            <mat-option value="treatment">treatment</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperNext>Next</button>
+                      </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="firstFormGroup" [completed]="false" [optional]="false">
+                  <form [formGroup]="firstFormGroup">
+                    <ng-template matStepLabel>Fill in Quantity</ng-template>
+                    <mat-form-field>
+                      <mat-label>Quantity</mat-label>
+                      <input matInput formControlName="quantityCtrl" placeholder="e.g 150" required>
+                    </mat-form-field>
+                    <div>
+                      <button mat-button matStepperPrevious>Back</button>
+                      <button mat-button matStepperNext>Next</button>
+                    </div>
+                  </form>
+                </mat-step>
+                <mat-step [stepControl]="firstFormGroup" [completed]="false" [optional]="false">
+                    <form [formGroup]="firstFormGroup">
+                      <ng-template matStepLabel>Fill in Price</ng-template>
+                      <mat-form-field>
+                        <mat-label>Price</mat-label>
+                        <input matInput formControlName="priceCtrl" placeholder="e.g. 200" required>
+                      </mat-form-field>
+                      <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperNext>Next</button>
+                      </div>
+                    </form>
+                </mat-step>
+                <mat-step>
+                  <ng-template matStepLabel>Done</ng-template>
+                  <p>You are now done.</p>
+                  <div>
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button (click)="addProduct()" (click)="stepper.reset()">Add</button>
+                  </div>
+                </mat-step>
+              </mat-horizontal-stepper>
+        </div>
+        <br>
+    </div>
+    {{firstFormGroup}}
+</body>
+</html>

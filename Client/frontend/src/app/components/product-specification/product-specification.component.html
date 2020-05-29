@@ -28,7 +28,7 @@
             </div>
         </div>
     </div>
-    <div [ngClass]="{'leave-comment': show == true, 'leave-comment2': show == false}">
+    <div [ngClass]="{'leave-comment': show == true, 'leave-comment2': show == false}" *ngIf="role=='user'">
         <a href="javascript:void(0)" (click)="toggle()">
             <svg class="bi bi-chevron-compact-down" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor"
                 xmlns="http://www.w3.org/2000/svg" *ngIf="show==false">

@@ -19,10 +19,19 @@ export class ShopService {
     return this.http.put(url, {data: products});
   }
 
-  getProductSpecification(){
-    let productInfo = JSON.parse(localStorage.getItem('productInfo'));
-    const url=`http://localhost:5000/users/5ea4af31fc2dc335d0dfc9e8/shop/${productInfo.name}&${productInfo.company}`;
-    return this.http.get<any>(url);
+  getProductSpecification(role){
+    if(role == 'user'){
+      let productInfo = JSON.parse(localStorage.getItem('productInfo'));
+      const url=`http://localhost:5000/users/5ea4af31fc2dc335d0dfc9e8/shop/${productInfo.name}&${productInfo.company}`;
+      return this.http.get<any>(url);
+    }else {
+      //let companyId = JSON.parse(localStorage.getItem('companyInfo'))._id;
+      let companyId = '5ea57363b1801f3c649e2e7f';
+      let productInfo = JSON.parse(localStorage.getItem('productInfo'));
+      const url=`http://localhost:5000/companies/${companyId}/products/${productInfo.name}`;
+      return this.http.get<any>(url);
+    }
+
   }
 
   leaveReview(userInfo, body){

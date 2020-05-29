@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
@@ -38,11 +39,12 @@
                 </div>
                 <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. AgroFun" name="name_abbr" [(ngModel)]="name_abbr">
             </div> 
+            <p *ngIf="valid_password==false&&filled==true" style="color: red;">*Please enter a valid password</p>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-default">Password:</span>
                 </div>
-                <input type="password" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. 123" name="password" [(ngModel)]="password">
+                <input type="password" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. a1!poGo" name="password" [(ngModel)]="password">
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
@@ -84,15 +86,16 @@
                 </div>
                 <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. john123" name="username" [(ngModel)]="username">
             </div>
+            <p *ngIf="valid_password==false&&filled==true" style="color: red;">*Please enter a valid password.</p>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-default">Password:</span>
                 </div>
-                <input type="password" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. 123" name="password" [(ngModel)]="password">
+                <input type="password" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. a1!poGo" name="password" [(ngModel)]="password">
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-default">Date of bith:</span>
+                <span class="input-group-text" id="inputGroup-sizing-default">Date of birth:</span>
                 </div>
                 <input type="date" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" name="date" [(ngModel)]="date">
             </div>
@@ -120,6 +123,9 @@
         <div id="submit">
             <button type="button" class="btn btn-outline-dark" (click)="register()">Registruj se</button>
         </div>
+    </div>
+    <div class="recaptcha">
+        <re-captcha (resolved)="resolved($event)" siteKey="6Ldd6vwUAAAAALeZoPXC7TvKv5yjKFItnpc3svJ2"></re-captcha>
     </div>
     <br>
 </body>

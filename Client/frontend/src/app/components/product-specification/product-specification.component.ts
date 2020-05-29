@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ShopService } from '../../services/shop.service';
 import { Product } from '../../models/product';
+import { ActivatedRoute } from '@angular/router';
+
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-product-specification',
@@ -8,6 +11,7 @@ import { Product } from '../../models/product';
   styleUrls: ['./product-specification.component.css']
 })
 export class ProductSpecificationComponent implements OnInit {
+  @Input() role:string;
   product: Product;
   reviews: any[];
   show:boolean = false;
@@ -18,11 +22,15 @@ export class ProductSpecificationComponent implements OnInit {
     comment: ""
   };
 
-  constructor(private shopService:ShopService) { }
+  constructor(
+    private shopService:ShopService,
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => { this.role = params['role'];});
     this.product = JSON.parse(localStorage.getItem('productInfo'));
-    this.shopService.getProductSpecification().subscribe(response =>{
+    this.shopService.getProductSpecification(this.role).subscribe(response =>{
       this.reviews = response.data;
     });
   }
@@ -49,14 +57,19 @@ export class ProductSpecificationComponent implements OnInit {
     });
   
     if(!approval) {
-      window.alert("This user already commented on this product!");
+      this.snackBar.open("This user already commented on this product!", null, {
+        duration: 1500
+      });
       return;
     }
 
-    this.shopService.leaveReview(userInfo, {rating: this.new_review.rating, comment:this.new_review.comment}).subscribe(res=>{  
+    this.shopService.leaveReview(userInfo, {rating: this.new_review.rating, comment:this.new_review.comment}).subscribe(res=>{ 
+      console.log(res); 
       if(res.success==true){
         this.new_review.user = userInfo.username;
-        window.alert("Thank you for leaving a comment!");
+        this.snackBar.open("Thank you for leaving a comment!", null, {
+          duration: 1500
+        });
         this.reviews.push(this.new_review);
         
         // updating average rating of product on client side
@@ -64,7 +77,9 @@ export class ProductSpecificationComponent implements OnInit {
         localStorage.setItem('productInfo', JSON.stringify(this.product));
         return;
       }
-      window.alert(res.explanation);
+      this.snackBar.open("This user hasn't ordered this product yet!", null, {
+        duration: 1500
+      });
     });
 
   }

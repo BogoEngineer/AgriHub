@@ -6,7 +6,7 @@ const CompanySchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        short_name: {
+        abbreviation: {
             type: String,
             required: true
         },
@@ -14,21 +14,17 @@ const CompanySchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        date_of_founding: {
+        founding_date: {
             type: Date,
             required: true,
         },
-        location: {
+        place: {
             type: String,
             required: true
         },
         email: {
             type: String,
             required: true
-        },
-        approved: {
-            type: Boolean,
-            default: false
         },
         postman: {
             type: Number,

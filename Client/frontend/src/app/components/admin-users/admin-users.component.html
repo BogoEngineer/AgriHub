@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="mode">
+        <button type="button" class="btn btn-secondary" *ngIf="usermode==false" (click)="toggleMode()">Farmers</button>
+        <button type="button" class="btn btn-secondary" *ngIf="usermode==true" (click)="toggleMode()">Companies</button>
+    </div>
+    <div class="view" *ngIf="usermode==true">
+        <table class="table table-hover table-dark">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">First Name</th>
+              <th scope="col">Last Name</th>
+              <th scope="col">Username</th>
+              <th scope="col">Password</th>
+              <th scope="col">Email</th>
+              <th scope="col">Place of Birth</th>
+              <th scope="col">Date of Birth</th>
+              <th scope="col">Phone</th>
+              <th>
+                <a (click)="toggleView()" href="javascript:void(0)" matTooltip="add/discard new nursery">
+                  <svg class="bi bi-plus-circle" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="addview==false" class="add">
+                    <path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
+                  </svg>
+                  <svg class="bi bi-dash-circle" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="addview==true" class="discard">
+                    <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd" d="M3.5 8a.5.5 0 01.5-.5h8a.5.5 0 010 1H4a.5.5 0 01-.5-.5z" clip-rule="evenodd"/>
+                  </svg>
+                </a>
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let user of users, let i = index">
+                  <td scope="row" *ngIf="user.update==false">{{i+1}}</td>
+                  <td *ngIf="user.update==false">{{user.first_name}}</td>
+                  <td *ngIf="user.update==false">{{user.last_name}}</td>
+                  <td *ngIf="user.update==false">{{user.username}}</td>
+                  <td *ngIf="user.update==false">{{user.password}}</td>
+                  <td *ngIf="user.update==false">{{user.email}}</td>
+                  <td *ngIf="user.update==false">{{user.place_of_birth}}</td>
+                  <td *ngIf="user.update==false">{{user.date_of_birth}}</td>
+                  <td *ngIf="user.update==false">{{user.phone}}</td>
+                  <td *ngIf="user.update==false">
+                    <a href="javascript:void(0)" (click)="updateUser(user)" matTooltip="update user {{user.username}}" class="update">
+                        <svg class="bi bi-pencil-square" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                        </svg>
+                    </a>
+                  </td>
+                  <td *ngIf="user.update==false">
+                    <a href="javascript:void(0)" (click)="deleteUser(user)" matTooltip="delete user {{user.username}}" class="delete">
+                        <svg class="bi bi-trash" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                  </td>
+                  <td scope="row" *ngIf="user.update==true">{{i+1}}</td>
+                  <td *ngIf="user.update==true">
+                    <input class="form-control" type="text" placeholder="first name" [(ngModel)]="update_user.first_name" name="namae">
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="update_user.first_name==''">This field can't be empty.</small>
+                  </td>
+                  <td *ngIf="user.update==true">
+                    <input class="form-control" type="text" placeholder="last name" [(ngModel)]="update_user.last_name" name="namae">
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="update_user.last_name==''">This field can't be empty.</small>
+                  </td>
+                  <td *ngIf="user.update==true">
+                    <input class="form-control" type="text" placeholder="username" [(ngModel)]="update_user.username" name="namae"> 
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="update_user.username==''">This field can't be empty.</small>
+                  </td>
+                  <td *ngIf="user.update==true">
+                    <input class="form-control" type="text" placeholder="password" [(ngModel)]="update_user.password" name="namae"> 
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="update_user.password==''">This field can't be empty.</small>
+                  </td>
+                  <td *ngIf="user.update==true">
+                    <input class="form-control" type="text" placeholder="email" [(ngModel)]="update_user.email" name="namae"> 
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="update_user.email==''">This field can't be empty.</small>
+                  </td>
+                  <td *ngIf="user.update==true">
+                    <input class="form-control" type="text" placeholder="place of birth" [(ngModel)]="update_user.place_of_birth" name="namae"> 
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="update_user.place_of_birth==''">This field can't be empty.</small>
+                  </td>
+                  <td *ngIf="user.update==true">
+                    <input class="form-control" type="date" placeholder="date of birth" [(ngModel)]="update_user.date_of_birth" name="namae"> 
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="update_user.date_of_birth==''">This field can't be empty.</small>
+                  </td>
+                  <td *ngIf="user.update==true">
+                    <input class="form-control" type="text" placeholder="phone" [(ngModel)]="update_user.phone" name="namae"> 
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="update_user.phone==''">This field can't be empty.</small>
+                  </td>
+                  <td *ngIf="user.update==true">
+                    <a href="javascript:void(0)" (click)="sendUser(user)" matTooltip="Confirm input" class="confirm">
+                      <svg class="bi bi-check-circle" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="update_user.first_name != '' && update_user.last_name != '' && update_user.username != '' && update_user.password != '' && update_user.place_of_birth != '' && update_user.date_of_birth != '' && update_user.phone != ''">
+                        <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                        <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1013.5 8a.5.5 0 011 0 6.5 6.5 0 11-3.25-5.63.5.5 0 11-.5.865A5.472 5.472 0 008 2.5z" clip-rule="evenodd"/>
+                      </svg>
+                    </a>
+                  </td>
+                  <td *ngIf="user.update==true"></td>
+              </tr>
+              <tr *ngIf="addview==true">
+                <td scope="row">{{users.length+1}}</td>
+                  <td>
+                    <input class="form-control" type="text" placeholder="first name" [(ngModel)]="new_user.first_name" name="namae">
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="new_user.first_name==''">This field can't be empty.</small>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" placeholder="last name" [(ngModel)]="new_user.last_name" name="namae">
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="new_user.last_name==''">This field can't be empty.</small>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" placeholder="username" [(ngModel)]="new_user.username" name="namae"> 
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="new_user.username==''">This field can't be empty.</small>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" placeholder="password" [(ngModel)]="new_user.password" name="namae"> 
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="new_user.password==''">This field can't be empty.</small>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" placeholder="email" [(ngModel)]="new_user.email" name="namae"> 
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="new_user.email==''">This field can't be empty.</small>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" placeholder="place of birth" [(ngModel)]="new_user.place_of_birth" name="namae"> 
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="new_user.place_of_birth==''">This field can't be empty.</small>
+                  </td>
+                  <td>
+                    <input class="form-control" type="date" placeholder="date of birth" [(ngModel)]="new_user.date_of_birth" name="namae"> 
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="new_user.date_of_birth==''">This field can't be empty.</small>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" placeholder="phone" [(ngModel)]="new_user.phone" name="namae"> 
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="new_user.phone==''">This field can't be empty.</small>
+                  </td>
+                  <td>
+                    <a href="javascript:void(0)" (click)="addUser()" matTooltip="Confirm input" class="confirm">
+                      <svg class="bi bi-check-circle" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="new_user.first_name != '' && new_user.last_name != '' && new_user.username != '' && new_user.password != '' && new_user.place_of_birth != '' && new_user.date_of_birth != '' && new_user.phone != ''">
+                        <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                        <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1013.5 8a.5.5 0 011 0 6.5 6.5 0 11-3.25-5.63.5.5 0 11-.5.865A5.472 5.472 0 008 2.5z" clip-rule="evenodd"/>
+                      </svg>
+                    </a>
+                  </td>
+                  <td></td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="view" *ngIf="usermode==false">
+        <table class="table table-hover table-dark">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Full Name</th>
+              <th scope="col">Abbreviation</th>
+              <th scope="col">Password</th>
+              <th scope="col">Email</th>
+              <th scope="col">Founding Date</th>
+              <th scope="col">Place</th>
+              <th>
+                <a (click)="toggleView()" href="javascript:void(0)" matTooltip="add/discard new company">
+                  <svg class="bi bi-plus-circle" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="addview==false" class="add">
+                    <path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
+                  </svg>
+                  <svg class="bi bi-dash-circle" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="addview==true" class="discard">
+                    <path fill-rule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clip-rule="evenodd"/>
+                    <path fill-rule="evenodd" d="M3.5 8a.5.5 0 01.5-.5h8a.5.5 0 010 1H4a.5.5 0 01-.5-.5z" clip-rule="evenodd"/>
+                  </svg>
+                </a>
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let company of companies, let i = index">
+                  <td scope="row" *ngIf="company.update==false">{{i+1}}</td>
+                  <td *ngIf="company.update==false">{{company.full_name}}</td>
+                  <td *ngIf="company.update==false">{{company.abbreviation}}</td>
+                  <td *ngIf="company.update==false">{{company.password}}</td>
+                  <td *ngIf="company.update==false">{{company.email}}</td>
+                  <td *ngIf="company.update==false">{{company.founding_date}}</td>
+                  <td *ngIf="company.update==false">{{company.place}}</td>
+                  <td *ngIf="company.update==false">
+                    <a href="javascript:void(0)" (click)="updateCompany(company)" matTooltip="update user {{company.abbreviation}}" class="update">
+                        <svg class="bi bi-pencil-square" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                        </svg>
+                    </a>
+                  </td>
+                  <td *ngIf="company.update==false">
+                    <a href="javascript:void(0)" (click)="deleteCompany(company)" matTooltip="delete user {{company.username}}" class="delete">
+                        <svg class="bi bi-trash" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z"/>
+                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                  </td>
+                  <td scope="row" *ngIf="company.update==true">{{i+1}}</td>
+                  <td *ngIf="company.update==true">
+                    <input class="form-control" type="text" placeholder="full name" [(ngModel)]="update_company.full_name" name="namae">
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="update_company.full_name==''">This field can't be empty.</small>
+                  </td>
+                  <td *ngIf="company.update==true">
+                    <input class="form-control" type="text" placeholder="abbreviation" [(ngModel)]="update_company.abbreviation" name="namae">
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="update_company.abbreviation==''">This field can't be empty.</small>
+                  </td>
+                  <td *ngIf="company.update==true">
+                    <input class="form-control" type="text" placeholder="password" [(ngModel)]="update_company.password" name="namae">
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="update_company.password==''">This field can't be empty.</small>
+                  </td>
+                  <td *ngIf="company.update==true">
+                    <input class="form-control" type="text" placeholder="email" [(ngModel)]="update_company.email" name="namae">
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="update_company.email==''">This field can't be empty.</small>
+                  </td>
+                  <td *ngIf="company.update==true">
+                    <input class="form-control" type="date" placeholder="founding date" [(ngModel)]="update_company.founding_date" name="namae">
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="update_company.founding_date==''">This field can't be empty.</small>
+                  </td>
+                  <td *ngIf="company.update==true">
+                    <input class="form-control" type="text" placeholder="place" [(ngModel)]="update_company.place" name="namae">
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="update_company.place==''">This field can't be empty.</small>
+                  </td>
+                  <td *ngIf="company.update==true">
+                    <a href="javascript:void(0)" (click)="sendCompany(company)" matTooltip="Confirm input" class="confirm">
+                      <svg class="bi bi-check-circle" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="update_company.full_name != '' && update_company.abbreviation != '' && update_company.password != '' && update_company.email != '' && update_company.founding_date != '' && update_company.place != ''">
+                        <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                        <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1013.5 8a.5.5 0 011 0 6.5 6.5 0 11-3.25-5.63.5.5 0 11-.5.865A5.472 5.472 0 008 2.5z" clip-rule="evenodd"/>
+                      </svg>
+                    </a>
+                  </td>
+                  <td *ngIf="company.update==true"></td>
+              </tr>
+              <tr *ngIf="addview==true">
+                <td scope="row">{{companies.length+1}}</td>
+                  <td>
+                    <input class="form-control" type="text" placeholder="full name" [(ngModel)]="new_company.full_name" name="namae">
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="new_company.full_name==''">This field can't be empty.</small>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" placeholder="abbreviation" [(ngModel)]="new_company.abbreviation" name="namae">
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="new_company.abbreviation==''">This field can't be empty.</small>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" placeholder="password" [(ngModel)]="new_company.password" name="namae">
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="new_company.password==''">This field can't be empty.</small>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" placeholder="email" [(ngModel)]="new_company.email" name="namae">
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="new_company.email==''">This field can't be empty.</small>
+                  </td>
+                  <td>
+                    <input class="form-control" type="date" placeholder="founding date" [(ngModel)]="new_company.founding_date" name="namae">
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="new_company.founding_date==''">This field can't be empty.</small>
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" placeholder="place" [(ngModel)]="new_company.place" name="namae">
+                    <small id="emailHelp" class="form-text text-danger" *ngIf="new_company.place==''">This field can't be empty.</small>
+                  </td>
+                  <td>
+                    <a href="javascript:void(0)" (click)="addCompany()" matTooltip="Confirm input" class="confirm">
+                      <svg class="bi bi-check-circle" width="2em" height="2em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" *ngIf="new_company.full_name != '' && new_company.abbreviation != '' && new_company.password != '' && new_company.email != '' && new_company.founding_date != '' && new_company.place != ''">
+                        <path fill-rule="evenodd" d="M15.354 2.646a.5.5 0 010 .708l-7 7a.5.5 0 01-.708 0l-3-3a.5.5 0 11.708-.708L8 9.293l6.646-6.647a.5.5 0 01.708 0z" clip-rule="evenodd"/>
+                        <path fill-rule="evenodd" d="M8 2.5A5.5 5.5 0 1013.5 8a.5.5 0 011 0 6.5 6.5 0 11-3.25-5.63.5.5 0 11-.5.865A5.472 5.472 0 008 2.5z" clip-rule="evenodd"/>
+                      </svg>
+                    </a>
+                  </td>
+                  <td></td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+</body>
+</html>

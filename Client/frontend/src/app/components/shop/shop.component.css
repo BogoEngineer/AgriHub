@@ -60,6 +60,8 @@ body {
 }
 
 .info {
+    position: relative;
+    left: 20%;
     color: #696969;
 }
 
@@ -100,3 +102,9 @@ a:hover {
     height: 40%;
     left: 15%
 }
+
+
+.my-custom-class .tooltip-inner {
+    max-width: 400px;
+    width: 400px;
+  }

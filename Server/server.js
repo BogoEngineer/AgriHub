@@ -13,6 +13,7 @@ mongoose.connect('mongodb://localhost:27017/pia', {
 // Route files
 const users = require('./routes/users.js');
 const company = require('./routes/companies.js');
+const admin = require('./routes/admin.js');
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 // Mount routers
 app.use('/users', users);
 app.use('/companies', company);
+app.use('/admin', admin);
 
 const PORT = 5000
 

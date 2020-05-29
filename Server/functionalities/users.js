@@ -6,32 +6,7 @@ const Product = require('../collections/Product.js');
 const Company = require('../collections/Company.js');
 const Review = require('../collections/Review.js');
 
-// GET /users/
-// privilege: Admin
-exports.getUsers = async (req, res, next) => {
-    const query_result = await User.find();
-    return res.status(200).json({
-        success: true,
-        data: query_result
-    });
-}
 
-// PUT /users/:id
-// privilege: Admin and LoggedInUser
-exports.updateUser = async (req, res, next) => {
-    try {
-        const query_result = await User.findByIdAndUpdate(req.params.id, req.body);
-        return res.status(200).json({
-            success: true,
-        });
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            success: false
-        })
-    }
-
-}
 
 // PUT /users/:id
 // privilege: LoggedInUser
@@ -41,41 +16,6 @@ exports.getProfile = async (req, res, next) => {
         success: true,
         data: query_result
     });
-}
-
-// PUT /users/
-// privilege: Public
-exports.createUser = async (req, res, next) => {
-    try {
-        const query_result = await User.create(req.body);
-        return res.status(201).json({
-            success: true,
-            data: query_result
-        });
-    } catch (err) {
-        console.log(err);
-        return res.status(400).json({
-            success: false
-        });
-    }
-}
-
-// DEL /users/:id
-// privilege: Admin
-exports.deleteUser = async (req, res, next) => {
-    try {
-        const query_result = await User.findById(req.params.id);
-        query_result.remove();
-        res.status(200).json({
-            success: true,
-            data: query_result
-        });
-    } catch (err) {
-        console.log(err);
-        res.status(400).json({
-            success: false
-        });
-    }
 }
 
 // GET /users/:id/nurseries
@@ -411,13 +351,14 @@ exports.commentProduct = async (req, res, next) => {
     }).populate('product');
 
     let ordered = false;
-
+    console.log(orders);
     orders.forEach(order => {
+        if (order.product != null)
         if(order.product.name == req.params.proName) ordered = true;
     });
 
     if (!ordered) {
-        res.status(400).json({
+        res.status(200).json({
             success: false,
             explanation: "This user hasn't ordered this product yet!"
         });

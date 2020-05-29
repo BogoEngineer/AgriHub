@@ -1,0 +1,71 @@
+html {
+    min-height: 100vh;
+    height: 100vh;
+    background-image: url('/assets/resources/shopping181.png');
+}
+
+body {
+    min-height: 100vh;
+    height: 100vh;
+    background-image: url('/assets/resources/shopping181.png');
+}
+
+.xd {
+    position: relative;
+    width: 100%;   
+    background-image: url('/assets/resources/shopping181.png');
+}
+
+table {
+    position: relative;
+    border-style: none;
+    border-radius: 1%;
+    width: 96%;
+    top: 3%;
+    left: 2%; 
+}
+
+th {
+    color: grey;
+}
+
+td{
+    border-top: 1px solid;
+    border-color: (41, 43, 44);
+}
+
+thead{
+    border-top: none;
+}
+
+a {
+    color:white;
+}
+
+.info:hover {
+    color: yellowgreen;
+}
+.delete:hover {
+    color:rgb(238, 84, 84);
+}
+.addNew {
+    position: relative;
+    top: 5%;
+    width: 96%;
+    bottom: 3%;
+    left: 2%;
+    border-color: rgb(162, 162, 235);
+    border-style: dotted;
+}
+
+.mat-stepper-horizontal {
+    margin-top: 8px;
+  }
+  
+.mat-form-field, input {
+    margin-top: 16px;
+}
+
+.process {
+    background-color: lightcyan;
+}

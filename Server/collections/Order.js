@@ -18,7 +18,7 @@ const OrderSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ['delivered', 'travelling', 'on hold'],
+            enum: ['delivered', 'travelling', 'on hold', 'declined', 'high priority'],
             default: 'on hold'
         },
         product: {
@@ -28,7 +28,7 @@ const OrderSchema = new mongoose.Schema(
         },
         nursery: {
             type: mongoose.Schema.ObjectId,
-            ref: 'Warehouse',
+            ref: 'Nursery',
             required: true
         }
     },
