@@ -17,7 +17,8 @@ const {
     commentProduct,
     getProductSpecification,
     goShopping,
-    perish
+    perish,
+    sendMail
 } = require('../functionalities/users.js');
 
 const User = require('../collections/User.js');
@@ -29,7 +30,7 @@ router.route('/:id')
 
 router.route('/:id/nurseries')
     .get(getNurseries)
-    .put(addNursery);
+    .put(addNursery, sendMail);
 
 router.route('/:id/nurseries/:idNur')
     .delete(deleteNursery)

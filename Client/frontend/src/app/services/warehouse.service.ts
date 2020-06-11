@@ -11,21 +11,24 @@ export class WarehouseService {
   constructor(private http:HttpClient) { }
 
   getProducts(){
+    let userId = JSON.parse(localStorage.getItem('userInfo'))._id;
     let idNur = JSON.parse(localStorage.getItem('nurseryInfo'))._id;
-    const url = `http://localhost:5000/users/5ea4af31fc2dc335d0dfc9e8/nurseries/${idNur}/warehouse`;
+    const url = `http://localhost:5000/users/${userId}/nurseries/${idNur}/warehouse`;
     return this.http.get<any>(url, {});
   }
 
   getOrders(){
+    let userId = JSON.parse(localStorage.getItem('userInfo'))._id;
     let idNur = JSON.parse(localStorage.getItem('nurseryInfo'))._id;
-    const url = `http://localhost:5000/users/5ea4af31fc2dc335d0dfc9e8/nurseries/${idNur}/warehouse/orders`;
+    const url = `http://localhost:5000/users/${userId}/nurseries/${idNur}/warehouse/orders`;
     return this.http.get<any>(url, {});
   }
 
   useTreatment(name, company){
+    let userId = JSON.parse(localStorage.getItem('userInfo'))._id;
     let seedling = JSON.parse(localStorage.getItem('seedlingInfo'));
     let nursery = JSON.parse(localStorage.getItem('nurseryInfo'));
-    const url = `http://localhost:5000/users/5ea4af31fc2dc335d0dfc9e8/seedlings/treat`;
+    const url = `http://localhost:5000/users/${userId}/seedlings/treat`;
     let data = {
       tr_name: name,
       tr_company: company,
@@ -38,21 +41,23 @@ export class WarehouseService {
   }
 
   plantSeedling(name, company){
+    let userId = JSON.parse(localStorage.getItem('userInfo'))._id;
     let position = localStorage.getItem('position');
     let nursery = JSON.parse(localStorage.getItem('nurseryInfo'));
-    const url = `http://localhost:5000/users/5ea4af31fc2dc335d0dfc9e8/seedlings/manage`;
+    const url = `http://localhost:5000/users/${userId}/seedlings/manage`;
     let data = {
       company: company,
       name: name,
       nursery: nursery._id,
-      position: position,
+      position: position
     }
     return this.http.put(url, {data: data});
   }
 
   cancelOrder(name, company){
+    let userId = JSON.parse(localStorage.getItem('userInfo'))._id;
     let idNur = JSON.parse(localStorage.getItem('nurseryInfo'))._id;
-    const url = `http://localhost:5000/users/5ea4af31fc2dc335d0dfc9e8/nurseries/${idNur}/warehouse/orders/${name}&${company}`;
+    const url = `http://localhost:5000/users/${userId}/nurseries/${idNur}/warehouse/orders/${name}&${company}`;
     return this.http.delete(url);
   }
 }

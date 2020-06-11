@@ -24,11 +24,6 @@ const ProductSchema = new mongoose.Schema(
             type: String,
             required: true
         },
-        progress: {
-            type: Number,
-            default: 0,
-            max: 100
-        },
         position: {
             type: Number,
         }, 
@@ -38,17 +33,24 @@ const ProductSchema = new mongoose.Schema(
         },
         inWarehouse: {
             type: Boolean,
-            default: true
+            default: false
         },
         plantedAt: {
-            type: Date
-        },
-        usedAt: {
             type: Date
         },
         treatment: {
             type: mongoose.Schema.ObjectId,
             ref: 'Seedling'
+        },
+        time: {
+            type: Number,
+            required: true
+        },
+        endDate:{
+            type: Date
+        }, 
+        progress: {
+            type: Number
         }
     },
     {

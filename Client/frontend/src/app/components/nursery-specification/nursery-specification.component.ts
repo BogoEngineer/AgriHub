@@ -74,7 +74,6 @@ export class NurserySpecificationComponent implements OnInit {
       this.nurseryService.removeSeedling(seedling).subscribe();
     }
     //this.router.navigate(['user/nursery/dashboard']);
-    location.reload();
   }
 
   plant(position){

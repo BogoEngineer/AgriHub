@@ -40,10 +40,7 @@ export class CompanyHomeComponent implements OnInit {
   acceptOrder(order){
     //ne treba provera na klijentskoj strani moze i server too
     localStorage.setItem('orderInfo', JSON.stringify(order));
-    this.companyService.handleOrder('accept').subscribe(res=>{
-      this.orders = this.orders.filter(ord=>{
-        if(JSON.stringify(ord)!=JSON.stringify(order)) return ord;
-      })  
+    this.companyService.handleOrder('accept').subscribe(res=>{  
       if(res.success == false){
         this.snackBar.open('There is no postman available!', null, {
           duration: 2000
@@ -51,6 +48,11 @@ export class CompanyHomeComponent implements OnInit {
         this.orders.unshift(order);
         order.status ='high priority';
       }else{
+        this.orders.forEach(ord => {
+          if(JSON.stringify(order)==JSON.stringify(ord)){
+            ord.status = 'travelling';
+          }
+        });
         this.snackBar.open('The order has been accepted!', null, {
           duration: 2000
         });
@@ -71,5 +73,12 @@ export class CompanyHomeComponent implements OnInit {
     this.snackBar.open('The order has been declined!', null,{
       duration: 2000
     });
+  }
+
+  sortByDate(){
+    this.orders.sort((order1, order2)=>{
+      if(order1.date < order2.date) return -1;
+      return 1;
+    })
   }
 }

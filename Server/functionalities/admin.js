@@ -8,6 +8,18 @@ const User = require('../collections/User.js');
 const Request = require('../collections/Request.js');
 const reqest = require('request');
 
+// GET admin/usernames
+// privilege: All
+exports.getAllUsernames = async (req, res, next) => {
+    let companies = await Company.find().select('abbreviation -_id');
+    let users = await User.find().select('username -_id');
+    let usernames = companies.concat(users);
+    res.status(200).json({
+        success: true,
+        data: usernames
+    })
+}
+
 // POST admin/login/:role
 // privilege: All
 exports.logIn = async (req, res, next) => {

@@ -102,6 +102,19 @@
                       </div>
                     </form>
                 </mat-step>
+                <mat-step [stepControl]="firstFormGroup" [completed]="false" [optional]="false">
+                  <form [formGroup]="firstFormGroup">
+                    <ng-template matStepLabel>Fill in Time</ng-template>
+                    <mat-form-field>
+                      <mat-label>Time</mat-label>
+                      <input matInput formControlName="timeCtrl" placeholder="e.g. 20" required>
+                    </mat-form-field>
+                    <div>
+                      <button mat-button matStepperPrevious>Back</button>
+                      <button mat-button matStepperNext>Next</button>
+                    </div>
+                  </form>
+              </mat-step>
                 <mat-step>
                   <ng-template matStepLabel>Done</ng-template>
                   <p>You are now done.</p>
@@ -114,6 +127,5 @@
         </div>
         <br>
     </div>
-    {{firstFormGroup}}
 </body>
 </html>

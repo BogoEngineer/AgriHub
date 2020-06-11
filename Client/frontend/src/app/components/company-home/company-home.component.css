@@ -60,3 +60,7 @@ thead{
 .accept:hover {
     color: rgb(7, 248, 115);
 }
+
+.sort:hover{
+    color: lightskyblue;
+}

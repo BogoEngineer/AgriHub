@@ -94,7 +94,7 @@ export class WarehouseComponent implements OnInit {
   }
 
   useTreatment(name, company){
-    //this.warehouseService.useTreatment(name, company).subscribe()
+    this.warehouseService.useTreatment(name, company).subscribe()
     let find = this.products.filter(item=>{
       if(item.name == name || item.comp == company) return item;
     })[0];

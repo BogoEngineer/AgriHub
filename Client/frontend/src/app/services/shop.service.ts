@@ -9,26 +9,27 @@ export class ShopService {
   constructor(private http:HttpClient) { }
 
   getItems(){
-    const url = `http://localhost:5000/users/5ea4af31fc2dc335d0dfc9e8/shop`
+    let userId = JSON.parse(localStorage.getItem('userInfo'))._id;
+    const url = `http://localhost:5000/users/${userId}/shop`
     return this.http.get<any>(url, {});
   }
 
   orderProducts(products:any[]){
     let idNur = JSON.parse(localStorage.getItem('nurseryInfo'))._id;
-    const url=`http://localhost:5000/users/5ea4af31fc2dc335d0dfc9e8/shop/${idNur}`;
+    let userId = JSON.parse(localStorage.getItem('userInfo'))._id;
+    const url=`http://localhost:5000/users/${userId}/shop/${idNur}`;
     return this.http.put(url, {data: products});
   }
 
   getProductSpecification(role){
+    let userId = JSON.parse(localStorage.getItem('userInfo'))._id;
     if(role == 'user'){
       let productInfo = JSON.parse(localStorage.getItem('productInfo'));
-      const url=`http://localhost:5000/users/5ea4af31fc2dc335d0dfc9e8/shop/${productInfo.name}&${productInfo.company}`;
+      const url=`http://localhost:5000/users/${userId}/shop/${productInfo.name}&${productInfo.company}`;
       return this.http.get<any>(url);
     }else {
-      //let companyId = JSON.parse(localStorage.getItem('companyInfo'))._id;
-      let companyId = '5ea57363b1801f3c649e2e7f';
       let productInfo = JSON.parse(localStorage.getItem('productInfo'));
-      const url=`http://localhost:5000/companies/${companyId}/products/${productInfo.name}`;
+      const url=`http://localhost:5000/companies/${userId}/products/${productInfo.name}`;
       return this.http.get<any>(url);
     }
 

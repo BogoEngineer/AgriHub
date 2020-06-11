@@ -13,10 +13,14 @@ const {
     updateCompany,
     updateUser,
     logIn,
-    changePassword
+    changePassword,
+    getAllUsernames
 } = require('../functionalities/admin.js');
 
 const router = express.Router();
+
+router.route('/usernames')
+    .get(getAllUsernames);
 
 router.route('/login/:role')
     .post(logIn)

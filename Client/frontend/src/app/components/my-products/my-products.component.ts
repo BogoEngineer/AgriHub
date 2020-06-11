@@ -35,7 +35,8 @@ export class MyProductsComponent implements OnInit {
       nameCtrl: ['', Validators.required],
       typeCtrl: ['', Validators.required],
       quantityCtrl: ['', Validators.required],
-      priceCtrl: ['', Validators.required]
+      priceCtrl: ['', Validators.required],
+      timeCtrl: ['', Validators.required]
     });
     this.companyService.getMyProducts().subscribe(res=>{
       this.my_products = res.data;
@@ -60,11 +61,12 @@ export class MyProductsComponent implements OnInit {
       type: this.firstFormGroup.controls['typeCtrl'].value,
       quantity: this.firstFormGroup.controls['quantityCtrl'].value,
       price: this.firstFormGroup.controls['priceCtrl'].value,
-      id: ''
+      id: '',
+      time: this.firstFormGroup.controls['timeCtrl'].value,
     }
     
 
-    if(request.name != '' && request.type!= '' && request.quantity!= '' && request.price!=''){
+    if(request.name != '' && request.type!= '' && request.quantity!= '' && request.price!='' && request.time!=''){
       this.companyService.addProduct(request).subscribe(res=>{
         this.my_products.push(request as unknown as Product);
       });

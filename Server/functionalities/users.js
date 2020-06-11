@@ -5,6 +5,7 @@ const Order = require('../collections/Order.js');
 const Product = require('../collections/Product.js');
 const Company = require('../collections/Company.js');
 const Review = require('../collections/Review.js');
+const nodemailer = require("nodemailer");
 
 
 
@@ -21,11 +22,38 @@ exports.getProfile = async (req, res, next) => {
 // GET /users/:id/nurseries
 // privilege: LoggedInUser
 exports.getNurseries = async (req, res, next) => {
-    const query_result = await Nursery.find({ user: req.params.id });
+    const query_results = await Nursery.find({ user: req.params.id });
 
     res.status(200).json({
         success: true,
-        data: query_result
+        data: query_results
+    });
+}
+
+
+// helper for function bellow
+exports.sendMail = async (req, res) => {
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'peter.smith.throwaway@gmail.com',
+            pass: 'petersmith14'
+        },
+    });
+
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+        from: '"PIA Project" <peter.smith.throwaway@gmail.com>', // sender address
+        to: req.email, // list of receivers
+        subject: "Reminder", // Subject line
+        text: "Reminder", // plain text body
+        html: "<b>This is a reminder to maintain your nurseries.</b>", // html body
+    }, function (error, info) {
+        if (error) {
+            console.log("sendmail" + error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
     });
 }
 
@@ -34,10 +62,28 @@ exports.getNurseries = async (req, res, next) => {
 exports.addNursery = async (req, res, next) => {
     req.body.user = req.params.id;
     const query_result = await Nursery.create(req.body);
+    const user = await User.findById(mongoose.Types.ObjectId(query_result.user))
+
     res.status(201).json({
         success: true,
         data: query_result
     });
+    // updating state in nursery every hour
+    let interval = 5000;//60000*60;
+    let send_mail = true;
+    setInterval(async function () {
+        query_result.water -= 1;
+        query_result.temperature -= 0.5;
+        query_result.save();
+        if ((query_result.water < 75 || query_result.temperature < 12) && send_mail) {
+            req.email = user.email;
+            next();
+            send_mail = false;
+        }
+        if (query_result.water >= 75 && query_result.temperature >= 12) {
+            send_mail = true;
+        }
+    }, interval)
 }
 
 // DELETE /users/:id/nurseries/:idNur
@@ -81,14 +127,20 @@ exports.changeState = async (req, res, next) => {
 // GET /users/:id/nurseries/:idNur
 // privilege: LoggedInUsers
 exports.getSeedlings = async (req, res, next) => {
-    const query_result = await Product.find({
+    const seedlings = await Product.find({
         type: "seedling",
         nursery: req.params.idNur,
         inWarehouse: false
     }).populate({ path: 'company', select: 'full_name' });
+    for (let seedling of seedlings) {
+        seedling.progress = 100*(Date.now() - seedling.plantedAt.getTime()) / (seedling.endDate.getTime() - seedling.plantedAt.getTime())
+        if(seedling.progress > 100) seedling.progress = 100;
+        //console.log(seedling.progress);
+    }
+
     res.status(200).json({
         success: true,
-        data: query_result
+        data: seedlings
     });
 }
 
@@ -139,14 +191,16 @@ exports.getOrders = async (req, res, next) => {
 // privilege: LoggedInUser
 exports.cancelOrder = async (req, res, next) => {
     const query_result = await Order.aggregate([
-        { $lookup: { from: 'Product', localField: 'product', foreignField: '_id', as: 'prod' }},
-        { $project: {name:"$prod.name", company: "$company", user: "$user", nursery: "$nursery", status: "$status"}},
-        { "$match": {
-            status: { $in: ['on hold', 'travelling'] },
-            company: mongoose.Types.ObjectId(req.params.idComp),
-            nursery: mongoose.Types.ObjectId(req.params.idNur),
-            $expr: {$eq: ["$name" , [req.params.namePro]]}
-        }},
+        { $lookup: { from: 'Product', localField: 'product', foreignField: '_id', as: 'prod' } },
+        { $project: { name: "$prod.name", company: "$company", user: "$user", nursery: "$nursery", status: "$status" } },
+        {
+            $match: {
+                status: { $in: ['on hold', 'travelling'] },
+                company: mongoose.Types.ObjectId(req.params.idComp),
+                nursery: mongoose.Types.ObjectId(req.params.idNur),
+                $expr: { $eq: ["$name", [req.params.namePro]] }
+            }
+        },
     ]);
     company = await Company.findById(req.params.idComp);
     company.postman += 1;
@@ -158,12 +212,13 @@ exports.cancelOrder = async (req, res, next) => {
         inWarehouse: false,
         nursery: null
     });
+
     pr.forEach(product => {
         product.available = true;
-        product.nursery = null; 
+        product.nursery = null;
         product.save();
     });
-    for (order of query_result){
+    for (order of query_result) {
         await Order.findByIdAndRemove(order._id);
     }
     res.status(200).json({
@@ -175,18 +230,24 @@ exports.cancelOrder = async (req, res, next) => {
 // PUT /users/:id/seedlings/manage
 // privilege: LoggedInUsers
 exports.plantSeedling = async (req, res, next) => {
-    data = req.body.data;
-    const query_result = await Product.findOneAndUpdate({
+    let data = req.body.data;
+    let plantedDate = Date.now();
+
+    const query_result = await Product.findOne({
         company: data.company,
         name: data.name,
         inWarehouse: true,
         nursery: data.nursery
-    },
-        {
-            inWarehouse: false,
-            position: data.position,
-            plantedAt: Date.now()
-        });
+    })
+
+    let endDate = plantedDate + query_result.time * 60000 * 60 * 24 // days in miliseconds
+
+    await query_result.update({
+        inWarehouse: false,
+        position: data.position,
+        plantedAt: plantedDate,
+        endDate: new Date(endDate)
+    })
 
     const update = await Nursery.findById(data.nursery);
     update.num_of_seedlings += 1;
@@ -223,26 +284,29 @@ exports.perish = async (req, res) => {
 exports.useTreatment = async (req, res, next) => {
     // better mechanism for solving this is needed
     let data = req.body.data;
-    const treatment = await Product.findOneAndUpdate(
+    const treatment = await Product.findOne(
         {
             name: data.tr_name,
             company: data.tr_company,
             inWarehouse: true,
             nursery: data.nur_id
-        },
-        {
-            inWarehouse: false
-        });
-    const seedling = await Product.findOneAndUpdate(
+        })
+    const seedling = await Product.findOne(
         {
             nursery: data.nur_id,
             name: data.sd_name,
             company: data.sd_company,
             position: data.sd_position
-        },
-        {
-            treatment: treatment._id
-        }) //this is where you update seedlings progress
+        });
+
+    let newDate = new Date(seedling.endDate.getTime() - treatment.time * 60000 * 60 * 24);
+    
+    await seedling.update({
+        endDate: newDate
+    })
+    await treatment.update({
+        inWarehouse: false
+    })
     res.status(200).json({
         success: true,
         data: seedling.position
@@ -354,7 +418,7 @@ exports.commentProduct = async (req, res, next) => {
     console.log(orders);
     orders.forEach(order => {
         if (order.product != null)
-        if(order.product.name == req.params.proName) ordered = true;
+            if (order.product.name == req.params.proName) ordered = true;
     });
 
     if (!ordered) {

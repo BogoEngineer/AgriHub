@@ -9,6 +9,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class RegisterComponent implements OnInit {
   role: String = "";
+  all_usernames: any[];
+
   //User
   first_name: String;
   last_name: String;
@@ -25,6 +27,8 @@ export class RegisterComponent implements OnInit {
   place: String;
 
   filled: boolean;
+  existingUsername: boolean = false;
+  existingAbbreviation: boolean = false;
   valid_email:boolean;
   valid_password:boolean;
 
@@ -36,10 +40,14 @@ export class RegisterComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    this.adminService.getAllUsernames().subscribe(res=>{
+      this.all_usernames = res.data;
+    })
   }
 
   register(){
-    console.log(this.recaptcha)
+    this.existingUsername = false;
+    this.existingAbbreviation = false;
     if(this.recaptcha==undefined || this.recaptcha==null ||this.recaptcha==""){
       this.snackBar.open("Please check recaptcha button!", null, {
         duration: 1500
@@ -68,6 +76,18 @@ export class RegisterComponent implements OnInit {
       }
     }
     this.filled = true;
+
+    this.all_usernames.forEach(username => {
+      if(username.username == this.username && this.role=='User') {
+        this.existingUsername = true;
+        return;
+      }
+      if(username.abbreviation == this.name_abbr && this.role=='Company') {
+        this.existingAbbreviation = true;
+        return;
+      }
+    });
+
     let email_regex = new RegExp('.+@.+\..+').test(this.email); //fix
     if(!email_regex){
       this.valid_email = false;

@@ -33,6 +33,7 @@
                 </div>
                 <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. Agriculture Fundamentals d.o.o" name="full_name" [(ngModel)]="full_name">
             </div>  
+            <p *ngIf="existingAbbreviation==true" style="color: red;">*This abbreviation is already taken.</p>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-default">Name abbreviation:</span>
@@ -80,6 +81,7 @@
                 </div>
                 <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" placeholder="e.g. Smith" name="last_name" [(ngModel)]="last_name">
             </div>
+            <p *ngIf="existingUsername==true" style="color: red;">*This username is already taken.</p>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-default">Username:</span>

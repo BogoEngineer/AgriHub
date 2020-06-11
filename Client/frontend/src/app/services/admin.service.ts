@@ -69,4 +69,9 @@ export class AdminService {
     const url = `http://localhost:${this.host}/admin/companies/${company._id}`;
     return this.http.post<any>(url, company);
   }
+
+  getAllUsernames(){
+    const url = `http://localhost:${this.host}/admin/usernames`;
+    return this.http.get<any>(url);
+  }
 }
